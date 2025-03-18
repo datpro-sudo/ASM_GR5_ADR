@@ -1,6 +1,7 @@
 package com.example.asm_adr;
 
 import android.os.Bundle;
+import android.widget.ViewFlipper;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Home extends AppCompatActivity {
+
+    private ViewFlipper bannerFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +23,12 @@ public class Home extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        bannerFlipper = findViewById(R.id.viewFlipper);
+        bannerFlipper.startFlipping();
     }
+
+
+
+
 }
