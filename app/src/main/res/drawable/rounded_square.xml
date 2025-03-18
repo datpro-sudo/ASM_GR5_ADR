@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="400dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Tạo đường dẫn (path) để vẽ hình với độ cong khoảng 100 độ -->
+    <path
+        android:fillColor="#D2A6C7"
+        android:pathData="M0,0 H100 V50 Q50,80 0,50 Z" />
+</vector>
