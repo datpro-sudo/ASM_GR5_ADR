@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateBudgetOption">
+
+    <TextView
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="What are you saving for?"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="160dp"
+        android:background="@drawable/circle_shape"
+        android:clipToOutline="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/budgetexpense" />
+
+    <Button
+        android:id="@+id/btnschool"
+        android:layout_width="349dp"
+        android:layout_height="85dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="290dp"
+        android:backgroundTint="@color/pink"
+        android:drawableLeft="@drawable/school"
+        android:drawablePadding="0dp"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="0dp"
+        android:text="School"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold">
+
+    </Button>
+
+    <Button
+        android:id="@+id/btntravel"
+        android:layout_width="349dp"
+        android:layout_height="85dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="385dp"
+        android:backgroundTint="@color/pink"
+        android:drawableLeft="@drawable/travel"
+        android:drawablePadding="0dp"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="0dp"
+        android:text="Travel"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold">
+
+    </Button>
+
+    <Button
+        android:id="@+id/btnshopping"
+        android:layout_width="349dp"
+        android:layout_height="85dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="480dp"
+        android:backgroundTint="@color/pink"
+        android:drawableLeft="@drawable/shopping"
+        android:drawablePadding="0dp"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="0dp"
+        android:text="Shopping"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold">
+
+    </Button>
+
+    <Button
+        android:id="@+id/btninvest"
+        android:layout_width="349dp"
+        android:layout_height="85dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="575dp"
+        android:backgroundTint="@color/pink"
+        android:drawableLeft="@drawable/invest"
+        android:drawablePadding="0dp"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="0dp"
+        android:text="Invest"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold">
+
+    </Button>
+
+    <ImageView
+        android:id="@+id/imgBack"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/back">
+
+    </ImageView>
+</RelativeLayout>
