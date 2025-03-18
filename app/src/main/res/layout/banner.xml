@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="20dp"
+    android:background="@drawable/shape_banner"
+    android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/white"
+            android:id="@+id/tvTitle"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"
+            android:text="Easy create budget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:layout_below="@id/tvTitle"
+            android:text="Let's get started"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:src="@drawable/fortune"
+        android:layout_alignParentRight="true"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
+
+
+
+</RelativeLayout>
