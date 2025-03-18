@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Asm_adr"
         tools:targetApi="31">
         <activity
+            android:name=".Budget"
+            android:exported="false" />
+        <activity
             android:name=".Home"
             android:exported="false" />
         <activity
