@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="100dp">
+        
+        <ImageView
+            android:id="@+id/imgSpending"
+            android:layout_centerInParent="true"
+            android:src="@drawable/spending"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:text="Spending"
+            android:layout_below="@id/imgSpending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="100dp">
+
+        <ImageView
+            android:id="@+id/imgBudget"
+            android:layout_centerInParent="true"
+            android:src="@drawable/budget"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:text="Budget"
+            android:layout_below="@id/imgBudget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="100dp">
+        <ImageView
+            android:id="@+id/imgBill"
+            android:layout_centerInParent="true"
+            android:src="@drawable/graph"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:text="Bills"
+            android:layout_below="@id/imgBill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

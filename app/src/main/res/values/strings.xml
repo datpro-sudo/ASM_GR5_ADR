@@ -2,4 +2,5 @@
     <string name="app_name">asm_adr</string>
     <string name="Register"><u>Register</u></string>
     <string name="Login"><u>Login</u></string>
+    <string name="Overview">Overview and Activity</string>
 </resources>
