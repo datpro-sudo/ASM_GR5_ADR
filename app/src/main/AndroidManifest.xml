@@ -19,6 +19,9 @@
             android:name=".Create_Budget_Option"
             android:exported="false" />
         <activity
+            android:name=".Budget"
+            android:exported="false" />
+        <activity
             android:name=".Home"
             android:exported="false" />
         <activity
