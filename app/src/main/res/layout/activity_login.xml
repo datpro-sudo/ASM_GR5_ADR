@@ -8,26 +8,25 @@
     android:background="@color/xanhnhat"
     tools:context=".login">
 
+
     <LinearLayout
         android:id="@+id/ln1"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:background="@drawable/rounded_square"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginBottom="100dp"
             android:background="@drawable/circle_shape"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/hello"
-            android:layout_marginBottom="100dp"
-            />
-        </LinearLayout>
-    
-    
+            android:src="@drawable/soclo" />
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,11 +59,11 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/username" />
+                android:src="@drawable/user" />
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/img_username"
@@ -89,7 +88,7 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/img_password"
@@ -117,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/tv1"
-                android:text="Register"
+                android:text="@string/Register"
                 android:textColor="@color/red"
                 android:textSize="15sp"/>
         </RelativeLayout>
