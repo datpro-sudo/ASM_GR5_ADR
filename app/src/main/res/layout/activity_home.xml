@@ -62,8 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/bottom_menu"
-            android:layout_marginLeft="">
+        <include layout="@layout/bottom_menu">
 
         </include>
 
