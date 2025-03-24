@@ -57,7 +57,6 @@
                 </ViewFlipper>
             </RelativeLayout>
 
-
             <RelativeLayout
                 android:id="@+id/r3"
                 android:layout_width="match_parent"
@@ -79,8 +78,5 @@
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-
-
 
 </RelativeLayout>
