@@ -48,7 +48,7 @@
                 android:layout_height="30dp"/>
             <TextView
                 android:layout_centerHorizontal="true"
-                android:text="Budget"
+                android:text="Notification"
                 android:layout_below="@id/imgNotification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -68,11 +68,10 @@
                 android:layout_height="30dp"/>
             <TextView
                 android:layout_centerHorizontal="true"
-                android:text="Invest"
+                android:text="Profile"
                 android:layout_below="@id/imgProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
 
         </RelativeLayout>
 
