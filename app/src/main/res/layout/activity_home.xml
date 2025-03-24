@@ -8,10 +8,23 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/r4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/bottom_menu" />
+
+    </RelativeLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        android:layout_height="wrap_content">
+        tools:layout_editor_absoluteX="95dp"
+        tools:layout_editor_absoluteY="60dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,40 +34,54 @@
                 android:id="@+id/r1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <include layout="@layout/header"/>
+
+                <include layout="@layout/header" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_below="@id/r1"
                 android:id="@+id/r2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <include layout="@layout/banner"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/r1">
+
+                <ViewFlipper
+                    android:id="@+id/viewFlipper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoStart="true"
+                    android:flipInterval="3000">
+
+                    <include layout="@layout/banner"/>
+                    <include layout="@layout/banner2"/>
+                </ViewFlipper>
+
 
             </RelativeLayout>
 
 
             <RelativeLayout
-                android:layout_below="@id/r2"
                 android:id="@+id/r3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <include layout="@layout/menu"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/r2">
+
+                <include layout="@layout/menu" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_below="@id/r3"
                 android:id="@+id/r5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <include layout="@layout/wallet"/>
-
+                android:layout_height="wrap_content"
+                android:layout_below="@id/r3">
+                <include layout="@layout/wallet" />
             </RelativeLayout>
+
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
+
 
     <RelativeLayout
         android:layout_alignParentBottom="true"
@@ -68,10 +95,5 @@
         </include>
 
     </RelativeLayout>
-
-
-
-
-
 
 </RelativeLayout>
