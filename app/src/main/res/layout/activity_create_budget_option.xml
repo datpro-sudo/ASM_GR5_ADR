@@ -25,7 +25,7 @@
         android:background="@drawable/circle_shape"
         android:clipToOutline="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/budgetexpense" />
+        android:src="@drawable/BudgetExpense" />
 
     <Button
         android:id="@+id/btnschool"

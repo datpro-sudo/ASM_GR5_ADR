@@ -36,11 +36,68 @@
                 android:textStyle="bold"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
-
-
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/addbudget1"
+            android:layout_width="349dp"
+            android:layout_height="85dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="160dp"
+            android:backgroundTint="@color/pink"
+            android:drawableTop="@drawable/addbudget"
+            android:text=""
+            android:padding="16.5dp"
+            android:gravity="center">
+
+        </Button>
+
+        <Button
+            android:id="@+id/addbudget2"
+            android:layout_width="349dp"
+            android:layout_height="85dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="255dp"
+            android:backgroundTint="@color/pink"
+            android:drawableTop="@drawable/addbudget"
+            android:text=""
+            android:padding="16.5dp"
+            android:gravity="center">
+
+        </Button>
+
+        <Button
+            android:id="@+id/addbudget3"
+            android:layout_width="349dp"
+            android:layout_height="85dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="350dp"
+            android:backgroundTint="@color/pink"
+            android:drawableTop="@drawable/addbudget"
+            android:text=""
+            android:padding="16.5dp"
+            android:gravity="center">
+
+        </Button>
+
+        <Button
+            android:id="@+id/addbudget4"
+            android:layout_width="349dp"
+            android:layout_height="85dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="445dp"
+            android:backgroundTint="@color/pink"
+            android:drawableTop="@drawable/addbudget"
+            android:text=""
+            android:padding="16.5dp"
+            android:gravity="center">
+
+        </Button>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_alignParentBottom="true"

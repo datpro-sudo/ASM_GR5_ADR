@@ -36,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <TextView
-                android:textColor="@color/pink"
+                android:textColor="@color/black"
                 android:text="Add Cash Wallet"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <TextView
-                android:textColor="@color/pink"
+                android:textColor="@color/black"
                 android:text="Connect Bank"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
