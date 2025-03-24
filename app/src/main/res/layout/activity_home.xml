@@ -55,8 +55,6 @@
                     <include layout="@layout/banner"/>
                     <include layout="@layout/banner2"/>
                 </ViewFlipper>
-
-
             </RelativeLayout>
 
 
