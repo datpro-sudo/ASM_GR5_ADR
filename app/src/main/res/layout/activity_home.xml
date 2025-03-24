@@ -55,8 +55,6 @@
                     <include layout="@layout/banner"/>
                     <include layout="@layout/banner2"/>
                 </ViewFlipper>
-
-
             </RelativeLayout>
 
 
@@ -83,17 +81,6 @@
     </androidx.core.widget.NestedScrollView>
 
 
-    <RelativeLayout
-        android:layout_alignParentBottom="true"
-        android:id="@+id/r4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <include layout="@layout/bottom_menu"
-            android:layout_marginLeft="">
-
-        </include>
-
-    </RelativeLayout>
 
 </RelativeLayout>
