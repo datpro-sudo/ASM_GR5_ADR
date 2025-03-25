@@ -18,6 +18,7 @@ public class Home extends AppCompatActivity {
 
     private ViewFlipper bannerFlipper;
 
+    ImageView   imgVProfile;
     ImageView imgBudget1;
 
     @Override
@@ -56,6 +57,16 @@ public class Home extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        imgVProfile = (ImageView) findViewById(R.id.imgProfile);
+        imgVProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home.this, profile.class);
+                startActivity(intent);
+            }
+        });
+
 
 
     }
