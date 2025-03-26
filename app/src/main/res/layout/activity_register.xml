@@ -6,27 +6,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/xanhnhat"
-    tools:context=".login">
+    tools:context=".RegisterActivity">
 
     <LinearLayout
         android:id="@+id/ln1"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="280dp"
         android:background="@drawable/rounded_square"
         android:orientation="horizontal"
         android:gravity="center">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@drawable/circle_shape"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
             android:src="@drawable/soclo"
-            android:layout_marginBottom="100dp"
-            />
+            android:layout_marginBottom="80dp" />
     </LinearLayout>
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,17 +34,17 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        />
+        android:layout_marginTop="100dp" />
 
     <LinearLayout
         android:layout_width="320dp"
-        android:layout_height="400dp"
+        android:layout_height="500dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="200dp"
         android:background="@drawable/rounded_shadow"
         android:orientation="vertical">
 
+        <!-- Full Name Field -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,15 +61,16 @@
                 android:src="@drawable/user" />
 
             <EditText
+                android:id="@+id/fullNameText"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/img_username"
-                android:hint="Username" />
+                android:hint="Full Name" />
         </RelativeLayout>
 
-
+        <!-- Email Field -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,6 +87,7 @@
                 android:src="@drawable/email" />
 
             <EditText
+                android:id="@+id/emailText"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_centerVertical="true"
@@ -96,8 +96,7 @@
                 android:hint="Email" />
         </RelativeLayout>
 
-
-
+        <!-- Password Field -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -114,6 +113,7 @@
                 android:src="@drawable/password" />
 
             <EditText
+                android:id="@+id/passwordText"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_centerVertical="true"
@@ -122,7 +122,76 @@
                 android:hint="Password" />
         </RelativeLayout>
 
+        <!-- Birthday Field -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edittext_border"
+            android:padding="10dp">
 
+            <ImageView
+                android:id="@+id/img_birthday"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/calendar" />
+
+            <EditText
+                android:id="@+id/birthdayText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/img_birthday"
+                android:hint="Birthday (YYYY-MM-DD)" />
+        </RelativeLayout>
+        <!-- Gender Selection -->
+
+
+        <RadioGroup
+            android:id="@+id/rgSex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginRight="30dp"
+
+             />
+
+            <RadioButton
+                android:id="@+id/rbMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male" />
+
+            <RadioButton
+                android:id="@+id/rbFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female" />
+        </RadioGroup>
+
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/xanhnhat"
+            android:paddingHorizontal="60dp"
+            android:paddingVertical="12dp"
+            android:text="Register"
+            android:textColor="@color/white" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -149,19 +218,5 @@
                 android:textSize="15sp" />
         </RelativeLayout>
 
-
-
-        <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingHorizontal="60dp"
-            android:paddingVertical="12dp"
-            android:backgroundTint="@color/xanhnhat"
-            android:text="Register"
-            android:textColor="@color/white" />
-
     </LinearLayout>
-
 </RelativeLayout>

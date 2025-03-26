@@ -62,12 +62,13 @@
                 android:src="@drawable/user" />
 
             <EditText
+                android:id="@+id/emailText"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/img_username"
-                android:hint="Username/email" />
+                android:hint="Email" />
         </RelativeLayout>
 
 
@@ -87,6 +88,7 @@
                 android:src="@drawable/password" />
 
             <EditText
+                android:id="@+id/passwordText"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_centerVertical="true"
@@ -95,6 +97,20 @@
                 android:hint="Password" />
         </RelativeLayout>
 
+
+
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="60dp"
+            android:paddingVertical="12dp"
+            android:backgroundTint="@color/xanhnhat"
+            android:text="Login"
+            android:textColor="@color/white" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -120,18 +136,6 @@
                 android:textColor="@color/red"
                 android:textSize="15sp"/>
         </RelativeLayout>
-
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:paddingHorizontal="60dp"
-            android:paddingVertical="12dp"
-            android:backgroundTint="@color/xanhnhat"
-            android:text="Login"
-            android:textColor="@color/white" />
 
     </LinearLayout>
 
