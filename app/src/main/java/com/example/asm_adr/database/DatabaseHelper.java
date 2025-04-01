@@ -9,15 +9,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.asm_adr.models.Expense;
 import com.example.asm_adr.models.User;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserDatabase.db";
-    private static final int DATABASE_VERSION = 2; // Increased version to update database
+    private static final int DATABASE_VERSION = 2;
 
     // User Table
     private static final String TABLE_USERS = "users";
@@ -63,12 +61,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) { // Upgrade logic for existing users
+        if (oldVersion < 2) {
             db.execSQL(CREATE_TABLE_EXPENSES);
         }
     }
 
-    // ✅ Insert Expense
+    // Insert Expense
     public boolean insertExpense(Expense expense) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -84,7 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // ✅ Get All Expenses
+    // Get All Expenses
     public List<Expense> getAllExpenses() {
         List<Expense> expenseList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -108,30 +106,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return expenseList;
     }
 
-    // ✅ Hash password using SHA-256
-    private String hashPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                hexString.append(String.format("%02x", b));
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    // ✅ Insert User with Hashed Password
+    // Insert User (without password hashing)
     public boolean insertUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        String hashedPassword = hashPassword(user.getPassword());
 
         values.put(COLUMN_EMAIL, user.getEmail());
-        values.put(COLUMN_PASSWORD, hashedPassword);
+        values.put(COLUMN_PASSWORD, user.getPassword()); // Store password directly
         values.put(COLUMN_FULLNAME, user.getFullName());
         values.put(COLUMN_BIRTHDAY, user.getBirthday());
         values.put(COLUMN_SEX, user.getSex());
@@ -142,7 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // ✅ Check if Email Exists
+    // Check if Email Exists
     public boolean isEmailExists(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_EMAIL + "=?", new String[]{email});
@@ -151,15 +132,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    // ✅ Check User Login
+    // Check User Login (without password hashing)
     public boolean checkUser(String email, String enteredPassword) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT password FROM users WHERE email=?", new String[]{email});
+        Cursor cursor = db.rawQuery("SELECT password FROM " + TABLE_USERS + " WHERE email=?", new String[]{email});
 
         if (cursor.moveToFirst()) {
-            String storedHash = cursor.getString(0);
+            String storedPassword = cursor.getString(0);
             cursor.close();
-            return storedHash.equals(hashPassword(enteredPassword));
+            return storedPassword.equals(enteredPassword); // Compare directly
         }
 
         cursor.close();

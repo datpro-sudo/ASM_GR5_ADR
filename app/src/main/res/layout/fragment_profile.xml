@@ -1,12 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center"
-    android:orientation="vertical">
+    android:padding="16dp"
+    android:background="@color/pink">
 
+    <!-- Tiêu đề -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp" />
+        android:text="User Profile"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- CardView chứa thông tin người dùng -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        android:padding="20dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <!-- Dữ liệu Email -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email: "
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="start"/>
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1@gmail.com"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <!-- Dữ liệu Full Name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Full Name: "
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="start"/>
+
+                <TextView
+                    android:id="@+id/tvFullName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="John Doe"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <!-- Dữ liệu Birthday -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Birthday: "
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="start"/>
+
+                <TextView
+                    android:id="@+id/tvBirthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="01/01/1990"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <!-- Dữ liệu Sex -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sex: "
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="start"/>
+
+                <TextView
+                    android:id="@+id/tvSex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Nút Logout -->
+    <Button
+        android:id="@+id/btn_Back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/red"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"/>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Cập nhật thông tin cá nhân -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Profile"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Form Cập nhật -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <!-- Field for Old Password -->
+
+
+        <!-- Field for New Password -->
+        <EditText
+            android:id="@+id/etNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="New Password"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:background="@drawable/edittext_border"
+            android:layout_marginBottom="12dp"
+            android:inputType="textPassword"/>
+
+        <!-- Field for Full Name -->
+        <EditText
+            android:id="@+id/etFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Name"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:background="@drawable/edittext_border"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Field for Birthday -->
+        <EditText
+            android:id="@+id/etBirthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Birthday (DD/MM/YYYY)"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:background="@drawable/edittext_border"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Field for Sex -->
+        <EditText
+            android:id="@+id/etSex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sex"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:background="@drawable/edittext_border"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Update Button -->
+        <Button
+            android:id="@+id/btnUpdateProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Profile"
+            android:textSize="18sp"
+            android:backgroundTint="@color/pink"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
 </LinearLayout>

@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.asm_adr.database.DatabaseHelper;
 import com.example.asm_adr.models.User;
+import com.example.asm_adr.PasswordUtils;
+
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -34,28 +37,19 @@ public class RegisterActivity extends AppCompatActivity {
         etFullName = findViewById(R.id.fullNameText);
         etBirthday = findViewById(R.id.birthdayText);
         rgSex = findViewById(R.id.rgSex);
-
         etEmail = findViewById(R.id.emailText);
         etPassword = findViewById(R.id.passwordText);
         btnRegister = findViewById(R.id.btnRegister);
         registerText = findViewById(R.id.tv_login);
 
         // Register Button Click
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser();
-            }
-        });
+        btnRegister.setOnClickListener(v -> registerUser());
 
         // Navigate to Login Activity
-        registerText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        registerText.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -74,11 +68,23 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Invalid email format!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.length() < 6) {
+            Toast.makeText(this, "Password must be at least 6 characters!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // Check if email already exists
         if (dbHelper.isEmailExists(email)) {
             Toast.makeText(this, "Email already registered!", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Hash password before saving
 
         // Save to Database
         User user = new User(email, password, fullName, birthday, sex);
@@ -92,5 +98,11 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Registration Failed. Try Again!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // Kiểm tra email hợp lệ
+    private boolean isValidEmail(String email) {
+        String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return Pattern.compile(emailPattern).matcher(email).matches();
     }
 }

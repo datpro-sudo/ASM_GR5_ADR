@@ -9,11 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.asm_adr.database.DatabaseHelper;
 
@@ -26,22 +22,13 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "LoginPrefs";
     private static final String KEY_EMAIL = "email";
-    private static final String KEY_PASSWORD = "password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-        // Adjust UI for system bars
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        // Initialize UI elements
+        // Khởi tạo UI
         registerText = findViewById(R.id.tv_register);
         etEmail = findViewById(R.id.emailText);
         etPassword = findViewById(R.id.passwordText);
@@ -50,23 +37,19 @@ public class LoginActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
-        // Auto-login if credentials exist
-        if (sharedPreferences.contains(KEY_EMAIL) && sharedPreferences.contains(KEY_PASSWORD)) {
+        // Tự động đăng nhập nếu email đã lưu
+        if (sharedPreferences.contains(KEY_EMAIL)) {
             String savedEmail = sharedPreferences.getString(KEY_EMAIL, "");
-            String savedPassword = sharedPreferences.getString(KEY_PASSWORD, "");
-
-            if (dbHelper.checkUser(savedEmail, savedPassword)) {
-                navigateToHome();
-            }
+            navigateToHome(savedEmail);
         }
 
-        // Open Register Activity
+        // Chuyển đến màn hình đăng ký
         registerText.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
 
-        // Handle Login Button Click
+        // Xử lý đăng nhập
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -74,10 +57,10 @@ public class LoginActivity extends AppCompatActivity {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(LoginActivity.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
             } else {
-                if (dbHelper.checkUser(email, password)) {
+                if (dbHelper.checkUser(email, password)) { // Kiểm tra trực tiếp không mã hóa
                     Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                    saveLoginCredentials(email, password);
-                    navigateToHome();
+                    saveLoginEmail(email);
+                    navigateToHome(email);
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }
@@ -85,15 +68,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void saveLoginCredentials(String email, String password) {
+    private void saveLoginEmail(String email) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_EMAIL, email);
-        editor.putString(KEY_PASSWORD, password);
         editor.apply();
     }
 
-    private void navigateToHome() {
+    private void navigateToHome(String email) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.putExtra("email", email);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

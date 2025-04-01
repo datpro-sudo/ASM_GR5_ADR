@@ -119,7 +119,17 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/img_password"
-                android:hint="Password" />
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+            <!-- Toggle button to show/hide password -->
+            <ImageView
+                android:id="@+id/img_toggle_password"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/hidden" />
         </RelativeLayout>
 
         <!-- Birthday Field -->
@@ -147,9 +157,8 @@
                 android:layout_toRightOf="@id/img_birthday"
                 android:hint="Birthday (YYYY-MM-DD)" />
         </RelativeLayout>
+
         <!-- Gender Selection -->
-
-
         <RadioGroup
             android:id="@+id/rgSex"
             android:layout_width="match_parent"
@@ -164,9 +173,7 @@
                 android:text="Gender"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:layout_marginRight="30dp"
-
-             />
+                android:layout_marginRight="30dp" />
 
             <RadioButton
                 android:id="@+id/rbMale"
@@ -180,7 +187,6 @@
                 android:layout_height="wrap_content"
                 android:text="Female" />
         </RadioGroup>
-
 
         <Button
             android:id="@+id/btnRegister"
@@ -204,7 +210,7 @@
                 android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You already have an acount?"
+                android:text="You already have an account?"
                 android:textSize="15sp" />
 
             <TextView
