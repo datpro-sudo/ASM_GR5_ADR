@@ -3,6 +3,7 @@ package com.example.asm_adr.fragments;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -46,12 +47,18 @@ public class ProfileFragment extends Fragment {
         initializeViews(view);
         databaseHelper = new DatabaseHelper(getActivity());
 
-        // Lấy email từ SharedPreferences
-        userEmail = getActivity().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-                .getString("email", "");
+        // Lấy email từ SharedPreferences với tên và key đồng bộ
+        SharedPreferences prefs = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        userEmail = prefs.getString("loggedInEmail", null);
 
-        if (!userEmail.isEmpty()) {
+        if (userEmail != null && !userEmail.isEmpty()) {
             loadUserProfile(userEmail);
+        } else {
+            // Nếu không có userEmail, chuyển về LoginActivity ngay lập tức
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            getActivity().finish();
         }
 
         // Xử lý đăng xuất
@@ -123,9 +130,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void logout() {
-        getActivity().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-                .edit().clear().apply();
+        // Xóa toàn bộ dữ liệu trong SharedPreferences "UserPrefs"
+        SharedPreferences prefs = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        prefs.edit().clear().apply();
 
+        // Chuyển về LoginActivity và xóa stack
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

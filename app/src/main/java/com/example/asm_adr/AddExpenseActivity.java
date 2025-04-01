@@ -1,6 +1,7 @@
 package com.example.asm_adr;
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,14 +21,15 @@ public class AddExpenseActivity extends AppCompatActivity {
     private Spinner categorySpinner;
     private EditText noteEditText, amountEditText, dateEditText;
     private Button saveButton;
-    private ImageView backButton;  // Back button added
+    private ImageView backButton;
     private DatabaseHelper databaseHelper;
     private String selectedCategory;
+    private String userEmail; // Thêm biến để lưu email người dùng
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_add_expense); // Make sure the layout name is correct
+        setContentView(R.layout.fragment_add_expense); // Đảm bảo tên layout đúng
 
         // Initialize views
         categorySpinner = findViewById(R.id.spinnerCategory);
@@ -35,16 +37,25 @@ public class AddExpenseActivity extends AppCompatActivity {
         amountEditText = findViewById(R.id.etMoney);
         dateEditText = findViewById(R.id.etDateTime);
         saveButton = findViewById(R.id.btnSave);
-        backButton = findViewById(R.id.imgBack); // Initialize back button
+        backButton = findViewById(R.id.imgBack);
 
         databaseHelper = new DatabaseHelper(this);
+
+        // Lấy email người dùng từ SharedPreferences (hoặc Intent)
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        userEmail = prefs.getString("loggedInEmail", null); // Giả định email được lưu khi đăng nhập
+        if (userEmail == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            finish(); // Thoát nếu không có người dùng đăng nhập
+            return;
+        }
 
         setupCategorySpinner();
         dateEditText.setOnClickListener(v -> showDatePicker());
         saveButton.setOnClickListener(v -> saveExpense());
 
         // Handle back button click
-        backButton.setOnClickListener(v -> finish()); // Close activity
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void setupCategorySpinner() {
@@ -89,15 +100,23 @@ public class AddExpenseActivity extends AppCompatActivity {
             return;
         }
 
-        double amount = Double.parseDouble(amountStr);
-        Expense expense = new Expense(selectedCategory, note, amount, date);
+        double amount;
+        try {
+            amount = Double.parseDouble(amountStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid amount format", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Tạo Expense với userEmail
+        Expense expense = new Expense(selectedCategory, note, amount, date, userEmail);
 
         boolean success = databaseHelper.insertExpense(expense);
 
         if (success) {
             Toast.makeText(this, "Expense saved successfully!", Toast.LENGTH_SHORT).show();
             clearFields();
-            finish(); // Close activity after saving
+            finish(); // Đóng activity sau khi lưu
         } else {
             Toast.makeText(this, "Error saving expense", Toast.LENGTH_SHORT).show();
         }

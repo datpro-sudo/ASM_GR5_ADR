@@ -17,7 +17,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserDatabase.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3; // Tăng version để áp dụng thay đổi
 
     // User Table
     private static final String TABLE_USERS = "users";
@@ -43,13 +43,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_NOTE = "note";
     private static final String COLUMN_AMOUNT = "amount";
     private static final String COLUMN_DATE = "date";
+    private static final String COLUMN_USER_EMAIL = "userEmail"; // Khóa phụ
 
     private static final String CREATE_TABLE_EXPENSES = "CREATE TABLE " + TABLE_EXPENSES + " (" +
             COLUMN_EXPENSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_CATEGORY + " TEXT, " +
             COLUMN_NOTE + " TEXT, " +
             COLUMN_AMOUNT + " REAL, " +
-            COLUMN_DATE + " TEXT);";
+            COLUMN_DATE + " TEXT, " +
+            COLUMN_USER_EMAIL + " TEXT, " +
+            "FOREIGN KEY(" + COLUMN_USER_EMAIL + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_EMAIL + "));";
 
     // Budget Table
     private static final String TABLE_BUDGETS = "budgets";
@@ -81,12 +84,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
             db.execSQL(CREATE_TABLE_EXPENSES);
         }
         if (oldVersion < 3) {
             db.execSQL(CREATE_TABLE_BUDGETS);
+            // Thêm cột userEmail vào bảng expenses nếu chưa có
+            db.execSQL("ALTER TABLE " + TABLE_EXPENSES + " ADD COLUMN " + COLUMN_USER_EMAIL + " TEXT");
+            db.execSQL("CREATE TABLE temp_expenses AS SELECT * FROM " + TABLE_EXPENSES);
+            db.execSQL("DROP TABLE " + TABLE_EXPENSES);
+            db.execSQL(CREATE_TABLE_EXPENSES);
+            db.execSQL("INSERT INTO " + TABLE_EXPENSES + " SELECT * FROM temp_expenses");
+            db.execSQL("DROP TABLE temp_expenses");
         }
-
     }
 
 
@@ -99,6 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NOTE, expense.getNote());
         values.put(COLUMN_AMOUNT, expense.getAmount());
         values.put(COLUMN_DATE, expense.getDate());
+        values.put(COLUMN_USER_EMAIL, expense.getUserEmail()); // Thêm userEmail
 
         long result = db.insert(TABLE_EXPENSES, null, values);
         db.close();
@@ -106,20 +117,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Get All Expenses
-    public List<Expense> getAllExpenses() {
+    // Get All Expenses for a specific user
+    public List<Expense> getAllExpenses(String userEmail) {
         List<Expense> expenseList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EXPENSES, null);
+
+        // Nếu userEmail là null, trả về danh sách rỗng hoặc xử lý theo yêu cầu
+        if (userEmail == null) {
+            db.close();
+            return expenseList; // Trả về danh sách rỗng
+        }
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EXPENSES + " WHERE " + COLUMN_USER_EMAIL + "=?", new String[]{userEmail});
 
         if (cursor.moveToFirst()) {
             do {
                 Expense expense = new Expense(
-                        cursor.getInt(0),   // id
-                        cursor.getString(1),// category
-                        cursor.getString(2),// note
-                        cursor.getDouble(3),// amount
-                        cursor.getString(4) // date
+                        cursor.getInt(0),    // id
+                        cursor.getString(1), // category
+                        cursor.getString(2), // note
+                        cursor.getDouble(3), // amount
+                        cursor.getString(4), // date
+                        cursor.getString(5)  // userEmail
                 );
                 expenseList.add(expense);
             } while (cursor.moveToNext());
@@ -138,7 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_EMAIL, user.getEmail());
-        values.put(COLUMN_PASSWORD, user.getPassword()); // Store password directly
+        values.put(COLUMN_PASSWORD, user.getPassword());
         values.put(COLUMN_FULLNAME, user.getFullName());
         values.put(COLUMN_BIRTHDAY, user.getBirthday());
         values.put(COLUMN_SEX, user.getSex());
@@ -149,28 +168,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    // Delete Expense
     public boolean deleteExpense(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int rowsDeleted = db.delete(TABLE_EXPENSES, "id = ?", new String[]{String.valueOf(id)});
-        return rowsDeleted > 0;  // Return true if delete was successful
+        int rowsDeleted = db.delete(TABLE_EXPENSES, COLUMN_EXPENSE_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return rowsDeleted > 0;
     }
 
+    // Get Expense by ID
     public Expense getExpenseById(int expenseId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        // Adjust the query based on your actual table and column names
-        Cursor cursor = db.query(TABLE_EXPENSES, null, COLUMN_ID + " = ?", new String[]{String.valueOf(expenseId)}, null, null, null);
+        Cursor cursor = db.query(TABLE_EXPENSES, null, COLUMN_EXPENSE_ID + " = ?", new String[]{String.valueOf(expenseId)}, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            int idIndex = cursor.getColumnIndex(COLUMN_ID);
+            int idIndex = cursor.getColumnIndex(COLUMN_EXPENSE_ID);
             int categoryIndex = cursor.getColumnIndex(COLUMN_CATEGORY);
             int noteIndex = cursor.getColumnIndex(COLUMN_NOTE);
             int amountIndex = cursor.getColumnIndex(COLUMN_AMOUNT);
             int dateIndex = cursor.getColumnIndex(COLUMN_DATE);
+            int userEmailIndex = cursor.getColumnIndex(COLUMN_USER_EMAIL);
 
-            // Check if any of the column indices are invalid (i.e., -1)
-            if (idIndex == -1 || categoryIndex == -1 || noteIndex == -1 || amountIndex == -1 || dateIndex == -1) {
+            if (idIndex == -1 || categoryIndex == -1 || noteIndex == -1 || amountIndex == -1 || dateIndex == -1 || userEmailIndex == -1) {
                 cursor.close();
-                return null; // Return null if any column is missing
+                return null;
             }
 
             int id = cursor.getInt(idIndex);
@@ -178,15 +199,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String note = cursor.getString(noteIndex);
             double amount = cursor.getDouble(amountIndex);
             String date = cursor.getString(dateIndex);
+            String userEmail = cursor.getString(userEmailIndex);
 
             cursor.close();
-            return new Expense(id, category, note, amount, date);
+            return new Expense(id, category, note, amount, date, userEmail);
         }
         cursor.close();
         return null;
     }
 
-
+    // Update Expense
     public boolean updateExpense(Expense expense) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -194,10 +216,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NOTE, expense.getNote());
         values.put(COLUMN_AMOUNT, expense.getAmount());
         values.put(COLUMN_DATE, expense.getDate());
+        values.put(COLUMN_USER_EMAIL, expense.getUserEmail()); // Thêm userEmail
 
-        int rowsAffected = db.update(TABLE_EXPENSES, values, COLUMN_ID + " = ?", new String[]{String.valueOf(expense.getId())});
+        int rowsAffected = db.update(TABLE_EXPENSES, values, COLUMN_EXPENSE_ID + " = ?", new String[]{String.valueOf(expense.getId())});
+        db.close();
         return rowsAffected > 0;
     }
+
 
 
     // Insert Budget
@@ -297,12 +322,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+
     // Check if Email Exists
     public boolean isEmailExists(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_EMAIL + "=?", new String[]{email});
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
+        db.close();
         return exists;
     }
 
@@ -314,10 +341,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             String storedPassword = cursor.getString(0);
             cursor.close();
-            return storedPassword.equals(enteredPassword); // Compare directly
+            db.close();
+            return storedPassword.equals(enteredPassword);
         }
 
         cursor.close();
+        db.close();
         return false;
     }
 }

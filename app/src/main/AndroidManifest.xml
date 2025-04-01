@@ -14,6 +14,10 @@
         tools:targetApi="31">
 
         <activity
+            android:name=".ViewChart"
+            android:exported="false" />
+
+        <activity
             android:name=".CreateBudgetOptionActivity"
             android:exported="false" />
         <activity
