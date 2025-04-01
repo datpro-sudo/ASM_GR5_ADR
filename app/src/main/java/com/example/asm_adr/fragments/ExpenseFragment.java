@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.asm_adr.R;
-import com.example.asm_adr.AddExpenseActivity; // Replace with your actual Add Expense activity
+import com.example.asm_adr.AddExpenseActivity;
 import com.example.asm_adr.adapters.ExpenseAdapter;
 import com.example.asm_adr.database.DatabaseHelper;
 import com.example.asm_adr.models.Expense;
@@ -24,15 +24,13 @@ public class ExpenseFragment extends Fragment {
     private RecyclerView recyclerView;
     private ExpenseAdapter adapter;
     private DatabaseHelper databaseHelper;
-    private ImageView imgAddExpense; // Reference to "Add Expense" button
+    private ImageView imgAddExpense;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the main layout
         View view = inflater.inflate(R.layout.activity_expense, container, false);
 
-        // Find the RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -41,9 +39,9 @@ public class ExpenseFragment extends Fragment {
         // Load expenses from the database
         loadExpenses();
 
-        // Find the "Add Expense" button in the included header2.xml
-        ImageView imgAdd = view.findViewById(R.id.imgAddExpense);
-        imgAdd.setOnClickListener(v -> {
+        // Find the "Add Expense" button
+        imgAddExpense = view.findViewById(R.id.imgAddExpense);
+        imgAddExpense.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddExpenseActivity.class);
             startActivity(intent);
         });
@@ -53,7 +51,14 @@ public class ExpenseFragment extends Fragment {
 
     private void loadExpenses() {
         List<Expense> expenseList = databaseHelper.getAllExpenses();
-        adapter = new ExpenseAdapter(expenseList);
+        adapter = new ExpenseAdapter(expenseList, databaseHelper, getContext());  // Pass context here
         recyclerView.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadExpenses(); // Reload expenses when returning to the fragment
     }
 }
