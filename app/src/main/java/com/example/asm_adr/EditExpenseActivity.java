@@ -3,7 +3,8 @@ package com.example.asm_adr;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,7 +20,7 @@ public class EditExpenseActivity extends AppCompatActivity {
     private Button btnSave;
     private DatabaseHelper databaseHelper;
     private int expenseId;
-    private String userEmail; // Thêm biến để lưu email người dùng
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,33 +37,42 @@ public class EditExpenseActivity extends AppCompatActivity {
         // Initialize database helper
         databaseHelper = new DatabaseHelper(this);
 
-        // Lấy email người dùng từ SharedPreferences (giả định đã lưu khi đăng nhập)
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        userEmail = prefs.getString("loggedInEmail", null);
+        // Lấy userEmail từ Intent trước, sau đó từ SharedPreferences
+        Intent intent = getIntent();
+        userEmail = intent.getStringExtra("userEmail");
         if (userEmail == null) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
-            finish(); // Thoát nếu không có người dùng đăng nhập
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            userEmail = prefs.getString("userEmail", null); // Đồng bộ key với AddExpenseActivity
+        }
+
+        // Kiểm tra nếu chưa đăng nhập
+        if (userEmail == null) {
+            Toast.makeText(this, "Please log in to edit expense", Toast.LENGTH_SHORT).show();
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                Intent loginIntent = new Intent(this, LoginActivity.class);
+                loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(loginIntent);
+                finish();
+            }, 1000); // Đợi 1 giây để Toast hiển thị
             return;
         }
 
         // Get expense ID from intent
-        Intent intent = getIntent();
         expenseId = intent.getIntExtra("expenseId", -1);
         Expense expense = databaseHelper.getExpenseById(expenseId);
 
         // Populate fields with existing data
-        if (expense != null) {
-            editCategory.setText(expense.getCategory());
-            editNote.setText(expense.getNote());
-            editAmount.setText(String.valueOf(expense.getAmount()));
-            editDate.setText(expense.getDate());
-            // userEmail được lấy từ expense để đảm bảo không thay đổi
-            userEmail = expense.getUserEmail();
-        } else {
+        if (expense == null) {
             Toast.makeText(this, "Expense not found", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
+
+        editCategory.setText(expense.getCategory());
+        editNote.setText(expense.getNote());
+        editAmount.setText(String.valueOf(expense.getAmount()));
+        editDate.setText(expense.getDate());
+        // Không cần gán lại userEmail từ expense, giữ nguyên từ Intent/SharedPreferences
 
         // Handle Save button click
         btnSave.setOnClickListener(v -> saveUpdatedExpense());
@@ -96,7 +106,7 @@ public class EditExpenseActivity extends AppCompatActivity {
 
         if (isUpdated) {
             Toast.makeText(this, "Expense updated successfully", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity and go back
+            finish();
         } else {
             Toast.makeText(this, "Failed to update expense", Toast.LENGTH_SHORT).show();
         }
