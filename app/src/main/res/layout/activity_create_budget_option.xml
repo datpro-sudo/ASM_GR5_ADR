@@ -30,7 +30,7 @@
     <Button
         android:id="@+id/btnschool"
         android:layout_width="349dp"
-        android:layout_height="85dp"
+        android:layout_height="75dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="290dp"
@@ -49,10 +49,10 @@
     <Button
         android:id="@+id/btntravel"
         android:layout_width="349dp"
-        android:layout_height="85dp"
+        android:layout_height="75dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginTop="385dp"
+        android:layout_marginTop="365dp"
         android:backgroundTint="@color/pink"
         android:drawableLeft="@drawable/travel"
         android:drawablePadding="0dp"
@@ -68,10 +68,10 @@
     <Button
         android:id="@+id/btnshopping"
         android:layout_width="349dp"
-        android:layout_height="85dp"
+        android:layout_height="75dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginTop="480dp"
+        android:layout_marginTop="440dp"
         android:backgroundTint="@color/pink"
         android:drawableLeft="@drawable/shopping"
         android:drawablePadding="0dp"
@@ -87,16 +87,35 @@
     <Button
         android:id="@+id/btninvest"
         android:layout_width="349dp"
-        android:layout_height="85dp"
+        android:layout_height="75dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginTop="575dp"
+        android:layout_marginTop="515dp"
         android:backgroundTint="@color/pink"
         android:drawableLeft="@drawable/invest"
         android:drawablePadding="0dp"
         android:paddingHorizontal="50dp"
         android:paddingVertical="0dp"
         android:text="Invest"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold">
+
+    </Button>
+
+    <Button
+        android:id="@+id/btnother"
+        android:layout_width="349dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="590dp"
+        android:backgroundTint="@color/pink"
+        android:drawableLeft="@drawable/ic_add"
+        android:drawablePadding="0dp"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="0dp"
+        android:text="Other"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold">
