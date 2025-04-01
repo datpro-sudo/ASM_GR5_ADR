@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.asm_adr.CreateBudgetOption;
 import com.example.asm_adr.R;
@@ -17,6 +19,7 @@ import com.example.asm_adr.R;
 public class HomeFragment extends Fragment {
     private ViewFlipper bannerFlipper;
     private ImageView imgBudget1;
+    private ImageView imgExpense1;
     private RelativeLayout banner;
 
     public HomeFragment() {
@@ -33,20 +36,32 @@ public class HomeFragment extends Fragment {
         bannerFlipper = view.findViewById(R.id.viewFlipper);
         bannerFlipper.startFlipping();
 
-        // Xử lý sự kiện khi nhấn vào "Budget"
+        // Handle "Budget" click
         imgBudget1 = view.findViewById(R.id.imgBudget);
         imgBudget1.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CreateBudgetOption.class);
-            startActivity(intent);
+            requireActivity().startActivity(new Intent(getActivity(), CreateBudgetOption.class));
         });
 
-        // Xử lý sự kiện khi nhấn vào "Banner"
+        // Handle "Expense" click - Navigate to ExpenseFragment
+        imgExpense1 = view.findViewById(R.id.imgExpense);
+        imgExpense1.setOnClickListener(v -> openExpenseFragment());
+
+        // Handle "Banner" click
         banner = view.findViewById(R.id.banner);
         banner.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CreateBudgetOption.class);
-            startActivity(intent);
+            requireActivity().startActivity(new Intent(getActivity(), CreateBudgetOption.class));
         });
 
         return view;
+    }
+
+    private void openExpenseFragment() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Replace HomeFragment with ExpenseFragment
+        transaction.replace(R.id.fragment_container, new ExpenseFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
