@@ -136,18 +136,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Nút Logout -->
-    <Button
-        android:id="@+id/btn_Back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/red"
-        android:layout_marginTop="20dp"
-        android:padding="12dp"/>
-
     <!-- Divider -->
     <View
         android:layout_width="match_parent"
@@ -182,7 +170,7 @@
         <EditText
             android:id="@+id/etNewPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:hint="New Password"
             android:textSize="16sp"
             android:padding="12dp"
@@ -194,7 +182,7 @@
         <EditText
             android:id="@+id/etFullName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:hint="Full Name"
             android:textSize="16sp"
             android:padding="12dp"
@@ -205,7 +193,7 @@
         <EditText
             android:id="@+id/etBirthday"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:hint="Birthday (DD/MM/YYYY)"
             android:textSize="16sp"
             android:padding="12dp"
@@ -216,7 +204,7 @@
         <EditText
             android:id="@+id/etSex"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:hint="Sex"
             android:textSize="16sp"
             android:padding="12dp"
@@ -226,12 +214,26 @@
         <!-- Update Button -->
         <Button
             android:id="@+id/btnUpdateProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="53dp"
             android:text="Update Profile"
-            android:textSize="18sp"
-            android:backgroundTint="@color/pink"
+            android:layout_gravity="center"
+            android:textSize="18dp"
+            android:backgroundTint="@color/xam"
             android:textColor="@color/white"
             android:layout_marginTop="16dp"/>
+        <Button
+            android:id="@+id/btn_Back"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_logout"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/xam"
+            android:layout_marginTop="20dp"
+            android:padding="12dp"/>
+
     </LinearLayout>
 </LinearLayout>
