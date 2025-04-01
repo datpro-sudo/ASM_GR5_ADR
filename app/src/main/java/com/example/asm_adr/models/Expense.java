@@ -1,31 +1,33 @@
 package com.example.asm_adr.models;
 
-
 public class Expense {
     private int id;
     private String category;
     private String note;
     private double amount;
     private String date;
+    private String userEmail; // Khóa phụ liên kết với User
 
-    // Constructor
-    public Expense(int id, String category, String note, double amount, String date) {
+    // Constructor đầy đủ
+    public Expense(int id, String category, String note, double amount, String date, String userEmail) {
         this.id = id;
         this.category = category;
         this.note = note;
         this.amount = amount;
         this.date = date;
+        this.userEmail = userEmail;
     }
 
-    // Constructor without ID (for inserting new expenses)
-    public Expense(String category, String note, double amount, String date) {
+    // Constructor không có ID (cho việc thêm mới)
+    public Expense(String category, String note, double amount, String date, String userEmail) {
         this.category = category;
         this.note = note;
         this.amount = amount;
         this.date = date;
+        this.userEmail = userEmail;
     }
 
-    // Getters and Setters
+    // Getters và Setters
     public int getId() {
         return id;
     }
@@ -66,6 +68,14 @@ public class Expense {
         this.date = date;
     }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
     @Override
     public String toString() {
         return "Expense{" +
@@ -74,7 +84,7 @@ public class Expense {
                 ", note='" + note + '\'' +
                 ", amount=" + amount +
                 ", date='" + date + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }
-
