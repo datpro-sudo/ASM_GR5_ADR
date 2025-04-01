@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.asm_adr.AddExpenseActivity;
-import com.example.asm_adr.CreateBudgetOption;
+import com.example.asm_adr.CreateBudgetOptionActivity;
 import com.example.asm_adr.R;
 import com.example.asm_adr.ViewChart;
 
@@ -41,10 +41,15 @@ public class HomeFragment extends Fragment {
         bannerFlipper = view.findViewById(R.id.viewFlipper);
         bannerFlipper.startFlipping();
 
-        // Handle "Budget" click
+        // Handle "Budget" icon click
         imgBudget1 = view.findViewById(R.id.imgBudget);
         imgBudget1.setOnClickListener(v -> {
-            requireActivity().startActivity(new Intent(getActivity(), CreateBudgetOption.class));
+            FragmentTransaction transaction = requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction();
+            transaction.replace(R.id.fragment_container, new BudgetFragment()); // Ensure fragment_container exists
+            transaction.addToBackStack(null); // Allows going back to the previous fragment
+            transaction.commit();
         });
 
         SpendingChart = view.findViewById(R.id.imgBill);
@@ -59,8 +64,14 @@ public class HomeFragment extends Fragment {
         // Handle "Banner" click
         banner = view.findViewById(R.id.banner);
         banner.setOnClickListener(v -> {
-            requireActivity().startActivity(new Intent(getActivity(), CreateBudgetOption.class));
+            FragmentTransaction transaction = requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction();
+            transaction.replace(R.id.fragment_container, new BudgetFragment()); // Ensure fragment_container is your FrameLayout ID
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
+
 
         banner = view.findViewById(R.id.banner2);
         banner.setOnClickListener(v -> {

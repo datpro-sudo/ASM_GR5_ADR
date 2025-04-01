@@ -18,16 +18,19 @@
             android:exported="false" />
 
         <activity
-            android:name=".CreateBudgetOption"
+            android:name=".CreateBudgetOptionActivity"
             android:exported="false" />
         <activity
-            android:name=".Budget"
+            android:name=".CreateBudgetActivity"
             android:exported="false" />
         <activity
             android:name=".AddExpenseActivity"
             android:exported="false" />
         <activity
             android:name=".EditExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditBudgetActivity"
             android:exported="false" />
 
         <activity
