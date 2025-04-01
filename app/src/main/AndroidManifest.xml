@@ -22,6 +22,11 @@
             android:name=".Budget"
             android:exported="false" />
         <activity
+            android:name=".AddExpenseActivity"
+            android:exported="false" />
+
+
+        <activity
             android:name=".Home"
             android:exported="false" />
         <activity
