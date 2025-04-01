@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.asm_adr.R;
 
-public class ChartFragment extends Fragment {
+public class NotificationFragment extends Fragment {
 
-    public ChartFragment() {
+    public NotificationFragment() {
         // Required empty public constructor
     }
 
