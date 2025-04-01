@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.asm_adr.R;
 
-public class HistoryFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
-    public HistoryFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
