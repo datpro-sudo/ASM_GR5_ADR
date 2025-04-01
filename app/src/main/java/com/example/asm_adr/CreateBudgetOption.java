@@ -29,7 +29,7 @@ public class CreateBudgetOption extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(CreateBudgetOption.this, Home.class);
+                Intent intent = new Intent(CreateBudgetOption.this, MainActivity.class);
 
                 startActivity(intent);
 
