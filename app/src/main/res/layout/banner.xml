@@ -15,15 +15,17 @@
         <TextView
             android:textColor="@color/white"
             android:id="@+id/tvTitle"
-            android:textSize="20sp"
+            android:textSize="30sp"
+            android:paddingLeft="10dp"
             android:layout_centerVertical="true"
-            android:text="Easy create budget"
+            android:text="Easy Budget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:layout_marginTop="20dp"
             android:textColor="@color/white"
+            android:paddingLeft="10dp"
             android:layout_below="@id/tvTitle"
             android:text="Let's get started"
             android:layout_width="wrap_content"
@@ -33,10 +35,10 @@
 
 
     <ImageView
-        android:src="@drawable/fortune"
+        android:src="@drawable/test"
         android:layout_alignParentRight="true"
-        android:layout_width="150dp"
-        android:layout_height="150dp"/>
+        android:layout_width="190dp"
+        android:layout_height="170dp"/>
 
 
 

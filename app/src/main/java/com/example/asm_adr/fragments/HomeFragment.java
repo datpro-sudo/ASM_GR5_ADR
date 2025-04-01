@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.asm_adr.AddExpenseActivity;
 import com.example.asm_adr.CreateBudgetOption;
 import com.example.asm_adr.R;
 import com.example.asm_adr.ViewChart;
@@ -59,6 +60,11 @@ public class HomeFragment extends Fragment {
         banner = view.findViewById(R.id.banner);
         banner.setOnClickListener(v -> {
             requireActivity().startActivity(new Intent(getActivity(), CreateBudgetOption.class));
+        });
+
+        banner = view.findViewById(R.id.banner2);
+        banner.setOnClickListener(v -> {
+            requireActivity().startActivity(new Intent(getActivity(), AddExpenseActivity.class));
         });
 
         return view;

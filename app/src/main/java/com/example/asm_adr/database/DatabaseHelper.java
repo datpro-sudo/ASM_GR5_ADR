@@ -129,6 +129,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsDeleted > 0;  // Return true if delete was successful
     }
 
+    public Expense getExpenseById(int expenseId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Adjust the query based on your actual table and column names
+        Cursor cursor = db.query(TABLE_EXPENSES, null, COLUMN_ID + " = ?", new String[]{String.valueOf(expenseId)}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(COLUMN_ID);
+            int categoryIndex = cursor.getColumnIndex(COLUMN_CATEGORY);
+            int noteIndex = cursor.getColumnIndex(COLUMN_NOTE);
+            int amountIndex = cursor.getColumnIndex(COLUMN_AMOUNT);
+            int dateIndex = cursor.getColumnIndex(COLUMN_DATE);
+
+            // Check if any of the column indices are invalid (i.e., -1)
+            if (idIndex == -1 || categoryIndex == -1 || noteIndex == -1 || amountIndex == -1 || dateIndex == -1) {
+                cursor.close();
+                return null; // Return null if any column is missing
+            }
+
+            int id = cursor.getInt(idIndex);
+            String category = cursor.getString(categoryIndex);
+            String note = cursor.getString(noteIndex);
+            double amount = cursor.getDouble(amountIndex);
+            String date = cursor.getString(dateIndex);
+
+            cursor.close();
+            return new Expense(id, category, note, amount, date);
+        }
+        cursor.close();
+        return null;
+    }
+
+
+    public boolean updateExpense(Expense expense) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CATEGORY, expense.getCategory());
+        values.put(COLUMN_NOTE, expense.getNote());
+        values.put(COLUMN_AMOUNT, expense.getAmount());
+        values.put(COLUMN_DATE, expense.getDate());
+
+        int rowsAffected = db.update(TABLE_EXPENSES, values, COLUMN_ID + " = ?", new String[]{String.valueOf(expense.getId())});
+        return rowsAffected > 0;
+    }
+
+
+
     // Check if Email Exists
     public boolean isEmailExists(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
