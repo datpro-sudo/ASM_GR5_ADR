@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.asm_adr.R;
 import com.example.asm_adr.database.DatabaseHelper;
 import com.example.asm_adr.models.Budget;
-import com.example.asm_adr.EditBudgetActivity; // Make sure this exists for editing budgets
+import com.example.asm_adr.EditBudgetActivity;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
 
     public BudgetAdapter(List<Budget> budgetList, Context context) {
         this.budgetList = budgetList;
-        this.databaseHelper = new DatabaseHelper(context); // Initialize DB helper
+        this.databaseHelper = new DatabaseHelper(context);
         this.context = context;
     }
 
@@ -41,15 +41,19 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
     @Override
     public void onBindViewHolder(@NonNull BudgetViewHolder holder, int position) {
         Budget budget = budgetList.get(position);
-        holder.categoryText.setText(budget.getCategory());
-        holder.noteText.setText(budget.getNote());
-        holder.amountText.setText("$" + budget.getAmount());
-        holder.dateText.setText(budget.getDate());
+
+        // Kiểm tra null trước khi setText
+        if (holder.categoryText != null) holder.categoryText.setText(budget.getCategory());
+        if (holder.noteText != null) holder.noteText.setText(budget.getNote());
+        if (holder.amountText != null) holder.amountText.setText("$" + budget.getAmount());
+        if (holder.dateText != null) holder.dateText.setText(budget.getDate());
+        if (holder.userEmailText != null) holder.userEmailText.setText(budget.getUserEmail());
 
         // Handle Edit button click
         holder.editButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditBudgetActivity.class);
-            intent.putExtra("budgetId", budget.getId()); // Pass budget ID to edit
+            intent.putExtra("budgetId", budget.getId());
+            intent.putExtra("userEmail", budget.getUserEmail());
             context.startActivity(intent);
         });
 
@@ -63,7 +67,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
                         if (adapterPosition != RecyclerView.NO_POSITION) {
                             Budget budgetToDelete = budgetList.get(adapterPosition);
 
-                            // Delete from database
                             boolean isDeleted = databaseHelper.deleteBudget(budgetToDelete.getId());
                             if (isDeleted) {
                                 budgetList.remove(adapterPosition);
@@ -85,7 +88,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
     }
 
     static class BudgetViewHolder extends RecyclerView.ViewHolder {
-        TextView categoryText, noteText, amountText, dateText;
+        TextView categoryText, noteText, amountText, dateText, userEmailText;
         Button editButton, deleteButton;
 
         public BudgetViewHolder(@NonNull View itemView) {

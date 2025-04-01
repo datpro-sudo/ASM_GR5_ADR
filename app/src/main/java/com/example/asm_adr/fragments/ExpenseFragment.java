@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.asm_adr.AddExpenseActivity;
+import com.example.asm_adr.LoginActivity;
 import com.example.asm_adr.R;
 import com.example.asm_adr.adapters.ExpenseAdapter;
 import com.example.asm_adr.database.DatabaseHelper;
@@ -39,29 +40,35 @@ public class ExpenseFragment extends Fragment {
 
         databaseHelper = new DatabaseHelper(getContext());
 
-        // Lấy email người dùng từ SharedPreferences
-        SharedPreferences prefs = getActivity().getSharedPreferences("UserPrefs", getActivity().MODE_PRIVATE);
-        userEmail = prefs.getString("loggedInEmail", null);
-
-        // Load expenses nếu userEmail không null
-        if (userEmail != null) {
-            loadExpenses();
-        } else {
+        // Lấy email người dùng từ SharedPreferences với key đồng bộ
+        refreshUserEmail();
+        if (userEmail == null) {
             Toast.makeText(getContext(), "Please log in to view expenses", Toast.LENGTH_SHORT).show();
+            redirectToLogin();
+            return view;
         }
+
+        loadExpenses();
 
         // Find the "Add Expense" button
         imgAddExpense = view.findViewById(R.id.imgAddExpense);
         imgAddExpense.setOnClickListener(v -> {
-            if (userEmail != null) {
-                Intent intent = new Intent(getActivity(), AddExpenseActivity.class);
-                startActivity(intent);
-            } else {
-                Toast.makeText(getContext(), "Please log in to add expenses", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent = new Intent(getActivity(), AddExpenseActivity.class);
+            intent.putExtra("userEmail", userEmail); // Truyền userEmail để sử dụng trong AddExpenseActivity
+            startActivity(intent);
         });
 
         return view;
+    }
+
+    private void refreshUserEmail() {
+        // Lấy userEmail từ arguments (nếu có) hoặc SharedPreferences
+        if (getArguments() != null && getArguments().containsKey("userEmail")) {
+            userEmail = getArguments().getString("userEmail");
+        } else {
+            SharedPreferences prefs = getActivity().getSharedPreferences("UserPrefs", getActivity().MODE_PRIVATE);
+            userEmail = prefs.getString("userEmail", null); // Đồng bộ với LoginActivity
+        }
     }
 
     private void loadExpenses() {
@@ -70,11 +77,25 @@ public class ExpenseFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+    private void redirectToLogin() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+        refreshUserEmail();
         if (userEmail != null) {
             loadExpenses(); // Reload expenses khi quay lại fragment
+        } else {
+            Toast.makeText(getContext(), "Please log in to view expenses", Toast.LENGTH_SHORT).show();
+            recyclerView.setAdapter(null);
+            redirectToLogin();
         }
     }
 }

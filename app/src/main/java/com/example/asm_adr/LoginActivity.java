@@ -20,8 +20,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     DatabaseHelper dbHelper;
     SharedPreferences sharedPreferences;
-    private static final String PREF_NAME = "UserPrefs"; // Đồng bộ với các file khác
-    private static final String KEY_EMAIL = "loggedInEmail"; // Đồng bộ với key trong ExpenseFragment
+    private static final String PREF_NAME = "UserPrefs";
+    private static final String KEY_EMAIL = "userEmail"; // Đồng bộ với BudgetFragment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(LoginActivity.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
             } else {
-                if (dbHelper.checkUser(email, password)) { // Kiểm tra trực tiếp không mã hóa
+                if (dbHelper.checkUser(email, password)) {
                     Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                     saveLoginEmail(email);
                     navigateToHome(email);
@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void navigateToHome(String email) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra("email", email); // Truyền email qua Intent (tùy chọn)
+        intent.putExtra("userEmail", email); // Đồng bộ key với BudgetFragment
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

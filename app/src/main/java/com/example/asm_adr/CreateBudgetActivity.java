@@ -1,6 +1,8 @@
 package com.example.asm_adr;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.asm_adr.database.DatabaseHelper;
 import com.example.asm_adr.models.Budget;
-import android.app.Activity;
+
 import java.util.Calendar;
 
 public class CreateBudgetActivity extends AppCompatActivity {
@@ -24,6 +26,7 @@ public class CreateBudgetActivity extends AppCompatActivity {
     private ImageView backButton;
     private DatabaseHelper databaseHelper;
     private String selectedCategory;
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +43,29 @@ public class CreateBudgetActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
+        // Lấy userEmail từ Intent hoặc SharedPreferences
+        userEmail = getIntent().getStringExtra("userEmail");
+        if (userEmail == null) {
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            userEmail = prefs.getString("userEmail", null);
+        }
+
+        // Kiểm tra nếu userEmail là null (chưa đăng nhập)
+        if (userEmail == null) {
+            Toast.makeText(this, "Please log in to add a budget", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setupCategorySpinner();
         dateEditText.setOnClickListener(v -> showDatePicker());
         saveButton.setOnClickListener(v -> saveBudget());
 
         // Handle back button click
-        backButton.setOnClickListener(v -> finish()); // Close activity
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void setupCategorySpinner() {
@@ -90,17 +110,22 @@ public class CreateBudgetActivity extends AppCompatActivity {
             return;
         }
 
-        double amount = Double.parseDouble(amountStr);
-        Budget budget = new Budget(selectedCategory, note, amount, date);
+        double amount;
+        try {
+            amount = Double.parseDouble(amountStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid amount format", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        Budget budget = new Budget(selectedCategory, note, amount, date, userEmail);
         boolean success = databaseHelper.insertBudget(budget);
 
         if (success) {
             Toast.makeText(this, "Budget saved successfully!", Toast.LENGTH_SHORT).show();
             clearFields();
-
             setResult(RESULT_OK);
-            finish(); // Close activity after saving
+            finish();
         } else {
             Toast.makeText(this, "Error saving budget", Toast.LENGTH_SHORT).show();
         }

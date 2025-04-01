@@ -1,7 +1,11 @@
 package com.example.asm_adr;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.asm_adr.database.DatabaseHelper;
 import com.example.asm_adr.models.Expense;
@@ -29,10 +33,20 @@ public class ViewChart extends AppCompatActivity {
 
         pieChart = findViewById(R.id.pieChart);
 
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        userEmail = prefs.getString("loggedInEmail", null);
+        userEmail = getIntent().getStringExtra("userEmail");
         if (userEmail == null) {
-            finish();
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            userEmail = prefs.getString("userEmail", null);
+        }
+
+        if (userEmail == null) {
+            Toast.makeText(this, "Please log in to view the chart", Toast.LENGTH_SHORT).show();
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }, 1000); // Đợi 1 giây
             return;
         }
 
@@ -55,33 +69,30 @@ public class ViewChart extends AppCompatActivity {
             pieEntries.add(new PieEntry(percentage, entry.getKey()));
         }
 
-        // Cấu hình PieDataSet
         PieDataSet dataSet = new PieDataSet(pieEntries, "Category Expenses");
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS); // Màu sắc tươi sáng hơn
-        dataSet.setValueTextSize(14f); // Kích thước chữ phần trăm
-        dataSet.setValueTextColor(android.R.color.white); // Màu chữ trắng
-        dataSet.setSliceSpace(3f); // Khoảng cách giữa các phần
-        dataSet.setSelectionShift(10f); // Độ nổi lên khi chọn
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setValueTextSize(14f);
+        dataSet.setValueTextColor(android.R.color.white);
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(10f);
 
-        // Cấu hình PieData
         PieData pieData = new PieData(dataSet);
-        pieData.setValueFormatter(new PercentFormatter(pieChart)); // Hiển thị % chính xác
+        pieData.setValueFormatter(new PercentFormatter(pieChart));
         pieChart.setData(pieData);
 
-        // Cấu hình PieChart
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setDrawHoleEnabled(true); // Tạo lỗ ở giữa (donut style)
-        pieChart.setHoleColor(android.R.color.transparent); // Màu lỗ trong suốt
-        pieChart.setHoleRadius(50f); // Bán kính lỗ
-        pieChart.setTransparentCircleRadius(55f); // Vòng trong suốt bao quanh lỗ
-        pieChart.setEntryLabelTextSize(12f); // Kích thước nhãn danh mục
-        pieChart.setEntryLabelColor(android.R.color.black); // Màu chữ nhãn
-        pieChart.setCenterText("Expenses"); // Chữ ở giữa
-        pieChart.setCenterTextSize(18f); // Kích thước chữ ở giữa
-        pieChart.getLegend().setEnabled(true); // Hiển thị chú thích
-        pieChart.getLegend().setTextSize(12f); // Kích thước chữ chú thích
-        pieChart.animateY(1000); // Hiệu ứng xuất hiện
-        pieChart.invalidate(); // Refresh biểu đồ
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(android.R.color.transparent);
+        pieChart.setHoleRadius(50f);
+        pieChart.setTransparentCircleRadius(55f);
+        pieChart.setEntryLabelTextSize(12f);
+        pieChart.setEntryLabelColor(android.R.color.black);
+        pieChart.setCenterText("Expenses");
+        pieChart.setCenterTextSize(18f);
+        pieChart.getLegend().setEnabled(true);
+        pieChart.getLegend().setTextSize(12f);
+        pieChart.animateY(1000);
+        pieChart.invalidate();
     }
 }

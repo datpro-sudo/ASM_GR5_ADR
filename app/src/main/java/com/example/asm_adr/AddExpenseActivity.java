@@ -1,6 +1,7 @@
 package com.example.asm_adr;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +25,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     private ImageView backButton;
     private DatabaseHelper databaseHelper;
     private String selectedCategory;
-    private String userEmail; // Thêm biến để lưu email người dùng
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +42,20 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
-        // Lấy email người dùng từ SharedPreferences (hoặc Intent)
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        userEmail = prefs.getString("loggedInEmail", null); // Giả định email được lưu khi đăng nhập
+        // Lấy userEmail từ Intent hoặc SharedPreferences
+        userEmail = getIntent().getStringExtra("userEmail");
         if (userEmail == null) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
-            finish(); // Thoát nếu không có người dùng đăng nhập
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            userEmail = prefs.getString("userEmail", null); // Đồng bộ với LoginActivity
+        }
+
+        // Kiểm tra nếu chưa đăng nhập
+        if (userEmail == null) {
+            Toast.makeText(this, "Please log in to add an expense", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
             return;
         }
 
@@ -116,7 +125,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         if (success) {
             Toast.makeText(this, "Expense saved successfully!", Toast.LENGTH_SHORT).show();
             clearFields();
-            finish(); // Đóng activity sau khi lưu
+            setResult(RESULT_OK); // Báo hiệu lưu thành công để fragment có thể làm mới
+            finish();
         } else {
             Toast.makeText(this, "Error saving expense", Toast.LENGTH_SHORT).show();
         }
