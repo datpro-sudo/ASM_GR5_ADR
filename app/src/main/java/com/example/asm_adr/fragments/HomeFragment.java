@@ -15,11 +15,15 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.asm_adr.CreateBudgetOption;
 import com.example.asm_adr.R;
+import com.example.asm_adr.ViewChart;
 
 public class HomeFragment extends Fragment {
     private ViewFlipper bannerFlipper;
     private ImageView imgBudget1;
     private ImageView imgExpense1;
+
+    private ImageView SpendingChart;
+
     private RelativeLayout banner;
 
     public HomeFragment() {
@@ -40,6 +44,11 @@ public class HomeFragment extends Fragment {
         imgBudget1 = view.findViewById(R.id.imgBudget);
         imgBudget1.setOnClickListener(v -> {
             requireActivity().startActivity(new Intent(getActivity(), CreateBudgetOption.class));
+        });
+
+        SpendingChart = view.findViewById(R.id.imgBill);
+        SpendingChart.setOnClickListener(v -> {
+            requireActivity().startActivity(new Intent(getActivity(), ViewChart.class));
         });
 
         // Handle "Expense" click - Navigate to ExpenseFragment
