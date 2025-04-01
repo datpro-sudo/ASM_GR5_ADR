@@ -20,8 +20,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     DatabaseHelper dbHelper;
     SharedPreferences sharedPreferences;
-    private static final String PREF_NAME = "LoginPrefs";
-    private static final String KEY_EMAIL = "email";
+    private static final String PREF_NAME = "UserPrefs"; // Đồng bộ với các file khác
+    private static final String KEY_EMAIL = "loggedInEmail"; // Đồng bộ với key trong ExpenseFragment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,9 @@ public class LoginActivity extends AppCompatActivity {
         // Tự động đăng nhập nếu email đã lưu
         if (sharedPreferences.contains(KEY_EMAIL)) {
             String savedEmail = sharedPreferences.getString(KEY_EMAIL, "");
-            navigateToHome(savedEmail);
+            if (!savedEmail.isEmpty()) {
+                navigateToHome(savedEmail);
+            }
         }
 
         // Chuyển đến màn hình đăng ký
@@ -76,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void navigateToHome(String email) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra("email", email);
+        intent.putExtra("email", email); // Truyền email qua Intent (tùy chọn)
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
