@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/xanhnhat"
-    tools:context=".login">
-
+    tools:context=".LoginActivity">
 
     <LinearLayout
         android:id="@+id/ln1"
@@ -35,8 +34,7 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        />
+        android:layout_marginTop="150dp" />
 
     <LinearLayout
         android:layout_width="320dp"
@@ -71,7 +69,6 @@
                 android:hint="Email" />
         </RelativeLayout>
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,11 +91,18 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/img_password"
-                android:hint="Password" />
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+            <ImageView
+                android:id="@+id/togglePassword"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/hidden"
+                android:padding="5dp" />
         </RelativeLayout>
-
-
-
 
         <Button
             android:id="@+id/btnLogin"
@@ -134,9 +138,7 @@
                 android:layout_toRightOf="@id/tv1"
                 android:text="@string/Register"
                 android:textColor="@color/red"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
         </RelativeLayout>
-
     </LinearLayout>
-
 </RelativeLayout>
