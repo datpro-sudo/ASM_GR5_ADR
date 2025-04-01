@@ -47,14 +47,15 @@ public class ProfileFragment extends Fragment {
         initializeViews(view);
         databaseHelper = new DatabaseHelper(getActivity());
 
-        // Lấy email từ SharedPreferences với tên và key đồng bộ
+        // Lấy email từ SharedPreferences với key đồng bộ
         SharedPreferences prefs = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        userEmail = prefs.getString("loggedInEmail", null);
+        userEmail = prefs.getString("userEmail", null); // Đồng bộ với LoginActivity
 
         if (userEmail != null && !userEmail.isEmpty()) {
             loadUserProfile(userEmail);
         } else {
             // Nếu không có userEmail, chuyển về LoginActivity ngay lập tức
+            Toast.makeText(getActivity(), "Please log in to view profile", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -116,7 +117,7 @@ public class ProfileFragment extends Fragment {
         if (!newFullName.isEmpty()) values.put("fullname", newFullName);
         if (!newBirthday.isEmpty()) values.put("birthday", newBirthday);
         if (!newSex.isEmpty()) values.put("sex", newSex);
-        if (!newPassword.isEmpty()) values.put("password", newPassword); // Mật khẩu không mã hóa
+        if (!newPassword.isEmpty()) values.put("password", newPassword);
 
         int rowsUpdated = db.update("users", values, "email=?", new String[]{userEmail});
         db.close();

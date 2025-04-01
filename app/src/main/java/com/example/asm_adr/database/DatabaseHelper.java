@@ -10,14 +10,13 @@ import com.example.asm_adr.models.Expense;
 import com.example.asm_adr.models.User;
 import com.example.asm_adr.models.Budget;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserDatabase.db";
-    private static final int DATABASE_VERSION = 3; // Tăng version để áp dụng thay đổi
+    private static final int DATABASE_VERSION = 4; // Giữ version 4
 
     // User Table
     private static final String TABLE_USERS = "users";
@@ -61,14 +60,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_BUDGET_NOTE = "note";
     private static final String COLUMN_BUDGET_AMOUNT = "amount";
     private static final String COLUMN_BUDGET_DATE = "date";
+    private static final String COLUMN_BUDGET_USER_EMAIL = "userEmail"; // Khóa phụ
 
     private static final String CREATE_TABLE_BUDGETS = "CREATE TABLE " + TABLE_BUDGETS + " (" +
             COLUMN_BUDGET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_BUDGET_CATEGORY + " TEXT, " +
             COLUMN_BUDGET_NOTE + " TEXT, " +
             COLUMN_BUDGET_AMOUNT + " REAL, " +
-            COLUMN_BUDGET_DATE + " TEXT);";
-
+            COLUMN_BUDGET_DATE + " TEXT, " +
+            COLUMN_BUDGET_USER_EMAIL + " TEXT, " +
+            "FOREIGN KEY(" + COLUMN_BUDGET_USER_EMAIL + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_EMAIL + "));";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -83,22 +84,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Kiểm tra và xử lý từng bước nâng cấp
         if (oldVersion < 2) {
+            // Từ version 1 lên 2: Xóa và tạo lại bảng expenses
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
             db.execSQL(CREATE_TABLE_EXPENSES);
         }
         if (oldVersion < 3) {
+            // Từ version 2 lên 3: Tạo bảng budgets nếu chưa có
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGETS);
             db.execSQL(CREATE_TABLE_BUDGETS);
-            // Thêm cột userEmail vào bảng expenses nếu chưa có
-            db.execSQL("ALTER TABLE " + TABLE_EXPENSES + " ADD COLUMN " + COLUMN_USER_EMAIL + " TEXT");
-            db.execSQL("CREATE TABLE temp_expenses AS SELECT * FROM " + TABLE_EXPENSES);
-            db.execSQL("DROP TABLE " + TABLE_EXPENSES);
-            db.execSQL(CREATE_TABLE_EXPENSES);
-            db.execSQL("INSERT INTO " + TABLE_EXPENSES + " SELECT * FROM temp_expenses");
-            db.execSQL("DROP TABLE temp_expenses");
+        }
+        if (oldVersion < 4) {
+            // Từ version 3 lên 4: Kiểm tra xem bảng budgets tồn tại chưa
+            Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name=?", new String[]{TABLE_BUDGETS});
+            boolean budgetsTableExists = cursor.getCount() > 0;
+            cursor.close();
+
+            if (!budgetsTableExists) {
+                // Nếu bảng budgets không tồn tại, tạo mới
+                db.execSQL(CREATE_TABLE_BUDGETS);
+            } else {
+                // Nếu bảng budgets đã tồn tại, thêm cột userEmail
+                try {
+                    db.execSQL("ALTER TABLE " + TABLE_BUDGETS + " ADD COLUMN " + COLUMN_BUDGET_USER_EMAIL + " TEXT");
+                } catch (Exception e) {
+                    // Nếu thêm cột thất bại (do cột đã tồn tại hoặc lỗi khác), bỏ qua
+                }
+            }
         }
     }
-
 
     // Insert Expense
     public boolean insertExpense(Expense expense) {
@@ -109,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NOTE, expense.getNote());
         values.put(COLUMN_AMOUNT, expense.getAmount());
         values.put(COLUMN_DATE, expense.getDate());
-        values.put(COLUMN_USER_EMAIL, expense.getUserEmail()); // Thêm userEmail
+        values.put(COLUMN_USER_EMAIL, expense.getUserEmail());
 
         long result = db.insert(TABLE_EXPENSES, null, values);
         db.close();
@@ -122,10 +137,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Expense> expenseList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Nếu userEmail là null, trả về danh sách rỗng hoặc xử lý theo yêu cầu
         if (userEmail == null) {
             db.close();
-            return expenseList; // Trả về danh sách rỗng
+            return expenseList;
         }
 
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_EXPENSES + " WHERE " + COLUMN_USER_EMAIL + "=?", new String[]{userEmail});
@@ -149,9 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return expenseList;
     }
 
-
-
-    // Insert User (without password hashing)
+    // Insert User
     public boolean insertUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -216,14 +228,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NOTE, expense.getNote());
         values.put(COLUMN_AMOUNT, expense.getAmount());
         values.put(COLUMN_DATE, expense.getDate());
-        values.put(COLUMN_USER_EMAIL, expense.getUserEmail()); // Thêm userEmail
+        values.put(COLUMN_USER_EMAIL, expense.getUserEmail());
 
         int rowsAffected = db.update(TABLE_EXPENSES, values, COLUMN_EXPENSE_ID + " = ?", new String[]{String.valueOf(expense.getId())});
         db.close();
         return rowsAffected > 0;
     }
-
-
 
     // Insert Budget
     public boolean insertBudget(Budget budget) {
@@ -234,26 +244,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_BUDGET_NOTE, budget.getNote());
         values.put(COLUMN_BUDGET_AMOUNT, budget.getAmount());
         values.put(COLUMN_BUDGET_DATE, budget.getDate());
+        values.put(COLUMN_BUDGET_USER_EMAIL, budget.getUserEmail());
 
         long result = db.insert(TABLE_BUDGETS, null, values);
         db.close();
         return result != -1;
     }
 
-    // Get All Budgets
-    public List<Budget> getAllBudgets() {
+    // Get All Budgets for a specific user
+    public List<Budget> getAllBudgets(String userEmail) {
         List<Budget> budgetList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BUDGETS, null);
+
+        if (userEmail == null) {
+            db.close();
+            return budgetList;
+        }
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_BUDGETS + " WHERE " + COLUMN_BUDGET_USER_EMAIL + "=?", new String[]{userEmail});
 
         if (cursor.moveToFirst()) {
             do {
                 Budget budget = new Budget(
-                        cursor.getInt(0),   // id
-                        cursor.getString(1),// category
-                        cursor.getString(2),// note
-                        cursor.getDouble(3),// amount
-                        cursor.getString(4) // date
+                        cursor.getInt(0),    // id
+                        cursor.getString(1), // category
+                        cursor.getString(2), // note
+                        cursor.getDouble(3), // amount
+                        cursor.getString(4), // date
+                        cursor.getString(5)  // userEmail
                 );
                 budgetList.add(budget);
             } while (cursor.moveToNext());
@@ -274,10 +292,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             int noteIndex = cursor.getColumnIndex(COLUMN_BUDGET_NOTE);
             int amountIndex = cursor.getColumnIndex(COLUMN_BUDGET_AMOUNT);
             int dateIndex = cursor.getColumnIndex(COLUMN_BUDGET_DATE);
+            int userEmailIndex = cursor.getColumnIndex(COLUMN_BUDGET_USER_EMAIL);
 
-            if (idIndex == -1 || categoryIndex == -1 || noteIndex == -1 || amountIndex == -1 || dateIndex == -1) {
+            if (idIndex == -1 || categoryIndex == -1 || noteIndex == -1 || amountIndex == -1 || dateIndex == -1 || userEmailIndex == -1) {
                 cursor.close();
-                return null; // Return null if any column is missing
+                return null;
             }
 
             int id = cursor.getInt(idIndex);
@@ -285,16 +304,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String note = cursor.getString(noteIndex);
             double amount = cursor.getDouble(amountIndex);
             String date = cursor.getString(dateIndex);
+            String userEmail = cursor.getString(userEmailIndex);
 
             cursor.close();
-            return new Budget(id, category, note, amount, date);
+            return new Budget(id, category, note, amount, date, userEmail);
         }
         cursor.close();
         return null;
     }
-
-
-
 
     // Update a Budget
     public boolean updateBudget(Budget budget) {
@@ -305,6 +322,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_BUDGET_NOTE, budget.getNote());
         values.put(COLUMN_BUDGET_AMOUNT, budget.getAmount());
         values.put(COLUMN_BUDGET_DATE, budget.getDate());
+        values.put(COLUMN_BUDGET_USER_EMAIL, budget.getUserEmail());
 
         int rowsAffected = db.update(TABLE_BUDGETS, values, COLUMN_BUDGET_ID + " = ?", new String[]{String.valueOf(budget.getId())});
         db.close();
@@ -319,10 +337,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsDeleted > 0;
     }
 
-
-
-
-
     // Check if Email Exists
     public boolean isEmailExists(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -333,7 +347,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    // Check User Login (without password hashing)
+    // Check User Login
     public boolean checkUser(String email, String enteredPassword) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT password FROM " + TABLE_USERS + " WHERE email=?", new String[]{email});
