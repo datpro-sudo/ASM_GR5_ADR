@@ -31,6 +31,10 @@ public class RegisterActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
 
         // Initialize Views
+        etFullName = findViewById(R.id.fullNameText);
+        etBirthday = findViewById(R.id.birthdayText);
+        rgSex = findViewById(R.id.rgSex);
+
         etEmail = findViewById(R.id.emailText);
         etPassword = findViewById(R.id.passwordText);
         btnRegister = findViewById(R.id.btnRegister);
