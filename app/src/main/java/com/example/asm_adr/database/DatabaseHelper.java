@@ -123,6 +123,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean deleteExpense(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_EXPENSES, "id = ?", new String[]{String.valueOf(id)});
+        return rowsDeleted > 0;  // Return true if delete was successful
+    }
+
     // Check if Email Exists
     public boolean isEmailExists(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
