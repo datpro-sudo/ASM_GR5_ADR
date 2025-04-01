@@ -57,14 +57,6 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         // Hiển thị userEmail (tùy chọn, nếu giao diện hỗ trợ)
         // holder.userEmailText.setText(expense.getUserEmail()); // Uncomment nếu thêm TextView trong layout
 
-        // Kiểm tra quyền sở hữu trước khi hiển thị nút chỉnh sửa/xóa
-        if (userEmail != null && userEmail.equals(expense.getUserEmail())) {
-            holder.editButton.setVisibility(View.VISIBLE);
-            holder.deleteButton.setVisibility(View.VISIBLE);
-        } else {
-            holder.editButton.setVisibility(View.GONE);
-            holder.deleteButton.setVisibility(View.GONE);
-        }
 
         // Handle Edit button click
         holder.editButton.setOnClickListener(v -> {

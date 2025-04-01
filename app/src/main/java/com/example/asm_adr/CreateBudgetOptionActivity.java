@@ -20,6 +20,7 @@ public class CreateBudgetOptionActivity extends AppCompatActivity {
         Button btnTravel = findViewById(R.id.btntravel);
         Button btnShopping = findViewById(R.id.btnshopping);
         Button btnInvest = findViewById(R.id.btninvest);
+        Button btnOther = findViewById(R.id.btnother);
         ImageView imgBack = findViewById(R.id.imgBack);
 
         // Set click listeners for buttons
@@ -27,6 +28,8 @@ public class CreateBudgetOptionActivity extends AppCompatActivity {
         btnTravel.setOnClickListener(view -> openCreateBudgetActivity("Travel"));
         btnShopping.setOnClickListener(view -> openCreateBudgetActivity("Shopping"));
         btnInvest.setOnClickListener(view -> openCreateBudgetActivity("Invest"));
+        btnOther.setOnClickListener(view -> openCreateBudgetActivity("Other"));
+
 
         // Back button functionality
         imgBack.setOnClickListener(view -> finish()); // Closes this activity and returns to the previous one

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.asm_adr.database.DatabaseHelper;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class ViewChart extends AppCompatActivity {
 
     private PieChart pieChart;
+    private ImageView backButton;
     private String userEmail;
 
     @Override
@@ -31,6 +33,7 @@ public class ViewChart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
+        backButton = findViewById(R.id.imgBack);
         pieChart = findViewById(R.id.pieChart);
 
         userEmail = getIntent().getStringExtra("userEmail");
@@ -94,5 +97,7 @@ public class ViewChart extends AppCompatActivity {
         pieChart.getLegend().setTextSize(12f);
         pieChart.animateY(1000);
         pieChart.invalidate();
+
+        backButton.setOnClickListener(v -> finish());
     }
 }
