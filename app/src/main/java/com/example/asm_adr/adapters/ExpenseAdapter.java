@@ -2,6 +2,7 @@ package com.example.asm_adr.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.asm_adr.R;
 import com.example.asm_adr.database.DatabaseHelper;
 import com.example.asm_adr.models.Expense;
+import com.example.asm_adr.EditExpenseActivity; // Import your EditExpenseActivity
 
 import java.util.List;
 
@@ -45,6 +47,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         holder.noteText.setText(expense.getNote());
         holder.amountText.setText("$" + expense.getAmount());
         holder.dateText.setText(expense.getDate());
+
+        // Handle Edit button click
+        holder.editButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EditExpenseActivity.class);  // Pass the context
+            intent.putExtra("expenseId", expense.getId());  // Pass the expense ID to the Edit activity
+            context.startActivity(intent);  // Start the EditExpenseActivity
+        });
 
         // Handle delete button click with confirmation
         holder.deleteButton.setOnClickListener(v -> {
@@ -84,7 +93,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
     static class ExpenseViewHolder extends RecyclerView.ViewHolder {
         TextView categoryText, noteText, amountText, dateText;
-        Button deleteButton;  // Changed to Button for delete
+        Button editButton, deleteButton;  // Buttons for Edit and Delete
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,7 +101,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             noteText = itemView.findViewById(R.id.noteText);
             amountText = itemView.findViewById(R.id.amountText);
             dateText = itemView.findViewById(R.id.dateText);
-            deleteButton = itemView.findViewById(R.id.btnDeleteExpense);  // Ensure this is the correct reference for Button
+            editButton = itemView.findViewById(R.id.btnEditExpense);  // Ensure this is the correct reference for Edit Button
+            deleteButton = itemView.findViewById(R.id.btnDeleteExpense);  // Ensure this is the correct reference for Delete Button
         }
     }
 }
