@@ -35,7 +35,7 @@
         <ImageView
             android:id="@+id/imgBudget"
             android:layout_centerInParent="true"
-            android:src="@drawable/budget"
+            android:src="@drawable/budgetimg"
             android:layout_width="50dp"
             android:layout_height="50dp"/>
         <TextView
@@ -54,13 +54,13 @@
         <ImageView
             android:id="@+id/imgBill"
             android:layout_centerInParent="true"
-            android:src="@drawable/graph"
+            android:src="@drawable/graph_ic"
             android:layout_width="50dp"
             android:layout_height="50dp"/>
 
         <TextView
             android:layout_centerHorizontal="true"
-            android:text="Bills"
+            android:text="Chart"
             android:layout_below="@id/imgBill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
