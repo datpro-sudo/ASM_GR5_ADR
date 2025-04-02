@@ -45,30 +45,27 @@
                 android:textColor="#666666" />
         </LinearLayout>
 
-        <!-- Buttons Positioned in a Small Space at Right -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="4dp">
 
-            <Button
-                android:id="@+id/btnEditBudget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_blue_light"
-                android:text="Edit"
-                android:textColor="@android:color/white"
-                android:layout_marginBottom="4dp"/>
+        <ImageView
+            android:id="@+id/btnEditBudget"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/imgedit"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="4dp"/>
 
-            <Button
-                android:id="@+id/btnDeleteBudget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:text="Delete"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+        <ImageView
+            android:id="@+id/btnDeleteBudget"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/imgdelete"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+</RelativeLayout>
+    </androidx.cardview.widget.CardView>
