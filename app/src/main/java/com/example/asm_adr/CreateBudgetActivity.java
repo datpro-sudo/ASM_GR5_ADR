@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.asm_adr.database.DatabaseHelper;
 import com.example.asm_adr.models.Budget;
@@ -60,6 +61,12 @@ public class CreateBudgetActivity extends AppCompatActivity {
             return;
         }
 
+        // Get category from Intent
+        selectedCategory = getIntent().getStringExtra("CATEGORY");
+
+        // Log the received category for debugging
+        Log.d("CreateBudgetActivity", "Received category: " + selectedCategory);
+
         setupCategorySpinner();
         dateEditText.setOnClickListener(v -> showDatePicker());
         saveButton.setOnClickListener(v -> saveBudget());
@@ -69,10 +76,17 @@ public class CreateBudgetActivity extends AppCompatActivity {
     }
 
     private void setupCategorySpinner() {
-        String[] categories = {"School", "Travel", "Shopping", "Invest"};
+        String[] categories = {"School", "Travel", "Shopping", "Invest", "Other"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(adapter);
+
+        // Set spinner selection based on received category
+        if (selectedCategory != null) {
+            int position = getCategoryPosition(categories, selectedCategory);
+            categorySpinner.setSelection(position);
+        }
+
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -84,6 +98,16 @@ public class CreateBudgetActivity extends AppCompatActivity {
                 selectedCategory = "Other";
             }
         });
+    }
+
+    // Get the position of the selected category in the spinner array
+    private int getCategoryPosition(String[] categories, String category) {
+        for (int i = 0; i < categories.length; i++) {
+            if (categories[i].equalsIgnoreCase(category)) {
+                return i;
+            }
+        }
+        return 4; // Default to "Other" if category is not found
     }
 
     private void showDatePicker() {

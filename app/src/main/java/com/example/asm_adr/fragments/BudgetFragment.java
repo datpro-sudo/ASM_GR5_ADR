@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.asm_adr.CreateBudgetOptionActivity;
 import com.example.asm_adr.LoginActivity;
 import com.example.asm_adr.R;
 import com.example.asm_adr.CreateBudgetActivity;
@@ -48,7 +50,7 @@ public class BudgetFragment extends Fragment {
 
         imgAddBudget = view.findViewById(R.id.imgAddBudget);
         imgAddBudget.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CreateBudgetActivity.class);
+            Intent intent = new Intent(getActivity(), CreateBudgetOptionActivity.class);
             intent.putExtra("userEmail", userEmail);
             startActivity(intent);
         });
