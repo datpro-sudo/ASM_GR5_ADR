@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -89,7 +90,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
 
     static class BudgetViewHolder extends RecyclerView.ViewHolder {
         TextView categoryText, noteText, amountText, dateText, userEmailText;
-        Button editButton, deleteButton;
+        ImageView editButton, deleteButton;
 
         public BudgetViewHolder(@NonNull View itemView) {
             super(itemView);

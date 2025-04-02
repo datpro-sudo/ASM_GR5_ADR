@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView; // Thêm import cho ImageView
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,14 +27,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     private List<Expense> expenseList;
     private DatabaseHelper databaseHelper;
     private Context context;
-    private String userEmail; // Thêm biến để kiểm tra quyền sở hữu
+    private String userEmail;
 
     public ExpenseAdapter(List<Expense> expenseList, DatabaseHelper databaseHelper, Context context) {
         this.expenseList = expenseList;
         this.databaseHelper = databaseHelper;
         this.context = context;
 
-        // Lấy email người dùng hiện tại từ SharedPreferences
         SharedPreferences prefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         this.userEmail = prefs.getString("loggedInEmail", null);
     }
@@ -51,22 +50,18 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         Expense expense = expenseList.get(position);
         holder.categoryText.setText(expense.getCategory());
         holder.noteText.setText(expense.getNote());
-        holder.amountText.setText("$" + String.format("%.2f", expense.getAmount())); // Định dạng số tiền
+        holder.amountText.setText("$" + String.format("%.2f", expense.getAmount()));
         holder.dateText.setText(expense.getDate());
 
-        // Hiển thị userEmail (tùy chọn, nếu giao diện hỗ trợ)
-        // holder.userEmailText.setText(expense.getUserEmail()); // Uncomment nếu thêm TextView trong layout
-
-
-        // Handle Edit button click
-        holder.editButton.setOnClickListener(v -> {
+        // Handle Edit ImageView click
+        holder.editImageView.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditExpenseActivity.class);
             intent.putExtra("expenseId", expense.getId());
             context.startActivity(intent);
         });
 
-        // Handle delete button click with confirmation
-        holder.deleteButton.setOnClickListener(v -> {
+        // Handle Delete ImageView click with confirmation
+        holder.deleteImageView.setOnClickListener(v -> {
             new AlertDialog.Builder(context)
                     .setTitle("Delete Expense")
                     .setMessage("Are you sure you want to delete this expense?")
@@ -75,10 +70,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
                         if (adapterPosition != RecyclerView.NO_POSITION) {
                             Expense expenseToDelete = expenseList.get(adapterPosition);
 
-                            // Delete the expense from the database
                             boolean isDeleted = databaseHelper.deleteExpense(expenseToDelete.getId());
                             if (isDeleted) {
-                                // Remove from the list and update RecyclerView
                                 expenseList.remove(adapterPosition);
                                 notifyItemRemoved(adapterPosition);
                                 Toast.makeText(context, "Expense deleted", Toast.LENGTH_SHORT).show();
@@ -97,15 +90,14 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         return expenseList.size();
     }
 
-    // Cung cấp phương thức để cập nhật danh sách chi tiêu
     public void updateExpenses(List<Expense> newExpenseList) {
         this.expenseList = newExpenseList;
         notifyDataSetChanged();
     }
 
     static class ExpenseViewHolder extends RecyclerView.ViewHolder {
-        TextView categoryText, noteText, amountText, dateText; // userEmailText nếu cần
-        Button editButton, deleteButton;
+        TextView categoryText, noteText, amountText, dateText;
+        ImageView editImageView, deleteImageView; // Thay Button bằng ImageView
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,9 +105,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             noteText = itemView.findViewById(R.id.noteText);
             amountText = itemView.findViewById(R.id.amountText);
             dateText = itemView.findViewById(R.id.dateText);
-            // userEmailText = itemView.findViewById(R.id.userEmailText); // Uncomment nếu thêm vào layout
-            editButton = itemView.findViewById(R.id.btnEditExpense);
-            deleteButton = itemView.findViewById(R.id.btnDeleteExpense);
+            editImageView = itemView.findViewById(R.id.btnEditExpenses); // Giữ id cũ
+            deleteImageView = itemView.findViewById(R.id.btnDeleteExpenses); // Giữ id cũ
         }
     }
 }
