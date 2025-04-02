@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:paddingLeft="15dp"
-            android:text="Check your expense here!"
+            android:text="Add your expense here!"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold" />

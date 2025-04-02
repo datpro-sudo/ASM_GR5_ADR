@@ -27,10 +27,10 @@
         android:layout_height="wrap_content"
         android:gravity="center">
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:src="@drawable/chart"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="80dp"
             android:layout_marginLeft="155dp">
 
         </ImageView>
@@ -85,7 +85,7 @@
     <Button
         android:id="@+id/btnApplyFilter"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Filter"
         android:textSize="12sp"
         android:background="@drawable/square_rouuded_shadow"

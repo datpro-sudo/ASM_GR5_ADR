@@ -155,7 +155,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/img_birthday"
-                android:hint="Birthday (YYYY-MM-DD)" />
+                android:hint="Birthday (DD/MM/YYYY)" />
         </RelativeLayout>
 
         <!-- Gender Selection -->
