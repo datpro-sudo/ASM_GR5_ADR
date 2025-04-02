@@ -5,12 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="@color/hongnhat"
     tools:context=".ViewChart">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
         <ImageView
             android:id="@+id/imgBack"
             android:layout_alignParentLeft="true"
@@ -18,21 +19,85 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/back">
-        </ImageView>
+            android:src="@drawable/back" />
     </RelativeLayout>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
         android:layout_width="0dp"
         android:layout_height="350dp"
+        android:elevation="8dp"
+        android:background="@drawable/square_rouuded_shadow"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.9"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
         tools:ignore="MissingConstraints" />
+
+    <!-- Ô lọc thời gian đặt ngay phía trên PieChart -->
+    <EditText
+        android:id="@+id/etStartDate"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="Start (dd-MM-yyyy)"
+        android:inputType="none"
+        android:background="@drawable/square_rouuded_shadow"
+        android:padding="4dp"
+        android:textSize="12sp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toTopOf="@id/pieChart"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp" />
+
+    <EditText
+        android:id="@+id/etEndDate"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="End (dd-MM-yyyy)"
+        android:inputType="none"
+        android:background="@drawable/square_rouuded_shadow"
+        android:padding="4dp"
+        android:textSize="12sp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toTopOf="@id/pieChart"
+        app:layout_constraintStart_toEndOf="@id/etStartDate"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <Button
+        android:id="@+id/btnApplyFilter"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="Filter"
+        android:textSize="12sp"
+        android:background="@drawable/square_rouuded_shadow"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toTopOf="@id/pieChart"
+        app:layout_constraintStart_toEndOf="@id/etEndDate"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="4dp" />
+
+    <TextView
+        android:id="@+id/tvTotalExpenses"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Total Expenses: $0.00"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:padding="8dp"
+        android:background="@drawable/square_rouuded_shadow"
+        android:elevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/pieChart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
