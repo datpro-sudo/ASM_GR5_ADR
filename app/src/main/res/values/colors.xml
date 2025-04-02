@@ -8,6 +8,8 @@
     <color name="xam">#dbd6d6</color>
     <color name="hongnhat">#FAE1E1</color>
     <color name="budget">#D5E7F5</color>
+    <color name="vang">#FAE197</color>#
+    <color name="editexpense">#CCE7E7</color>
 
 
 </resources>

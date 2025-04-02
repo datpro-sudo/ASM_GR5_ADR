@@ -4,23 +4,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/pink">
+    android:background="@color/editexpense">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Expense"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="40dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Expense"
+            android:layout_marginLeft="6dp"
+            android:textStyle="bold"
+            android:textSize="25dp">
+        </TextView>
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/logoImageView"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:src="@drawable/edit_expense"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="10dp"/>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="40dp"
         android:padding="20dp"
         android:orientation="vertical"
         android:background="@drawable/rounded_corners">
