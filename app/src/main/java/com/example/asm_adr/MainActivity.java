@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.asm_adr.fragments.CreateCategoryFragment;
 import com.example.asm_adr.fragments.NotificationFragment;
 import com.example.asm_adr.fragments.ProfileFragment;
 import com.example.asm_adr.fragments.HomeFragment;
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
             } else if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
+            }
+            else if (itemId == R.id.nav_add_category) {
+                selectedFragment = new CreateCategoryFragment();
             }
 
             if (selectedFragment != null) {

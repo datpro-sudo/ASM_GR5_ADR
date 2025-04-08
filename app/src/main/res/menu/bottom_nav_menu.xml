@@ -9,6 +9,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/nav_add_category"
+        android:icon="@drawable/addcategory"
+        android:title="Add Category"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/nav_notification"
         android:icon="@drawable/notification"
         android:title="Notification"
@@ -19,6 +25,9 @@
         android:icon="@drawable/profile"
         android:title="Profile"
         app:showAsAction="ifRoom" />
+
+
+
 
 
 </menu>

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.asm_adr.database.DatabaseHelper;
 import com.example.asm_adr.models.Expense;
 import java.util.Calendar;
+import java.util.List;
 
 public class AddExpenseActivity extends AppCompatActivity {
 
@@ -26,11 +27,12 @@ public class AddExpenseActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     private String selectedCategory;
     private String userEmail;
+    private ArrayAdapter<String> categoryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_add_expense); // Đảm bảo tên layout đúng
+        setContentView(R.layout.fragment_add_expense);
 
         // Initialize views
         categorySpinner = findViewById(R.id.spinnerCategory);
@@ -46,10 +48,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         userEmail = getIntent().getStringExtra("userEmail");
         if (userEmail == null) {
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-            userEmail = prefs.getString("userEmail", null); // Đồng bộ với LoginActivity
+            userEmail = prefs.getString("loggedInEmail", null);
         }
 
-        // Kiểm tra nếu chưa đăng nhập
         if (userEmail == null) {
             Toast.makeText(this, "Please log in to add an expense", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, LoginActivity.class);
@@ -63,26 +64,53 @@ public class AddExpenseActivity extends AppCompatActivity {
         dateEditText.setOnClickListener(v -> showDatePicker());
         saveButton.setOnClickListener(v -> saveExpense());
 
-        // Handle back button click
         backButton.setOnClickListener(v -> finish());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshCategorySpinner();
+    }
+
     private void setupCategorySpinner() {
-        String[] categories = {"Food", "Transport", "Shopping", "Bills", "Entertainment", "Other"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(adapter);
+        List<String> categories = databaseHelper.getAllCategories(userEmail);
+        if (categories.isEmpty()) {
+            categories.add("Other");
+        }
+
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(categoryAdapter);
+
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedCategory = categories[position];
+                selectedCategory = categories.get(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                selectedCategory = "Other";
+                selectedCategory = categories.isEmpty() ? "Other" : categories.get(0);
             }
         });
+    }
+
+    private void refreshCategorySpinner() {
+        List<String> categories = databaseHelper.getAllCategories(userEmail);
+        if (categories.isEmpty()) {
+            categories.add("Other");
+        }
+
+        categoryAdapter.clear();
+        categoryAdapter.addAll(categories);
+        categoryAdapter.notifyDataSetChanged();
+
+        // Đặt lại giá trị mặc định nếu selectedCategory không còn trong danh sách
+        if (selectedCategory == null || !categories.contains(selectedCategory)) {
+            selectedCategory = categories.get(0);
+            categorySpinner.setSelection(0);
+        }
     }
 
     private void showDatePicker() {
@@ -104,7 +132,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         String amountStr = amountEditText.getText().toString().trim();
         String date = dateEditText.getText().toString().trim();
 
-        if (selectedCategory.isEmpty() || note.isEmpty() || amountStr.isEmpty() || date.isEmpty()) {
+        if (selectedCategory == null || selectedCategory.isEmpty() || note.isEmpty() || amountStr.isEmpty() || date.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -117,15 +145,14 @@ public class AddExpenseActivity extends AppCompatActivity {
             return;
         }
 
-        // Tạo Expense với userEmail
         Expense expense = new Expense(selectedCategory, note, amount, date, userEmail);
-
         boolean success = databaseHelper.insertExpense(expense);
 
         if (success) {
             Toast.makeText(this, "Expense saved successfully!", Toast.LENGTH_SHORT).show();
             clearFields();
-            setResult(RESULT_OK); // Báo hiệu lưu thành công để fragment có thể làm mới
+            refreshCategorySpinner(); // Làm mới Spinner ngay sau khi lưu
+            setResult(RESULT_OK);
             finish();
         } else {
             Toast.makeText(this, "Error saving expense", Toast.LENGTH_SHORT).show();

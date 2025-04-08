@@ -20,6 +20,7 @@ import com.example.asm_adr.adapters.ExpenseAdapter;
 import com.example.asm_adr.database.DatabaseHelper;
 import com.example.asm_adr.models.Expense;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseFragment extends Fragment {
@@ -31,8 +32,7 @@ public class ExpenseFragment extends Fragment {
     private String userEmail;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_expense, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -54,7 +54,7 @@ public class ExpenseFragment extends Fragment {
         imgAddExpense = view.findViewById(R.id.imgAddExpense);
         imgAddExpense.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddExpenseActivity.class);
-            intent.putExtra("userEmail", userEmail); // Truyền userEmail để sử dụng trong AddExpenseActivity
+            intent.putExtra("userEmail", userEmail);
             startActivity(intent);
         });
 
@@ -72,8 +72,17 @@ public class ExpenseFragment extends Fragment {
     }
 
     private void loadExpenses() {
-        List<Expense> expenseList = databaseHelper.getAllExpenses(userEmail);
-        adapter = new ExpenseAdapter(expenseList, databaseHelper, getContext());
+        List<Expense> allExpenses = databaseHelper.getAllExpenses(userEmail);
+        List<Expense> filteredExpenses = new ArrayList<>();
+
+        // Lọc các bản ghi có amount != 0.0 (bỏ qua bản ghi mặc định từ CreateCategoryFragment)
+        for (Expense expense : allExpenses) {
+            if (expense.getAmount() != 0.0) { // Điều kiện lọc: chỉ hiển thị expense có amount khác 0
+                filteredExpenses.add(expense);
+            }
+        }
+
+        adapter = new ExpenseAdapter(filteredExpenses, databaseHelper, getContext());
         recyclerView.setAdapter(adapter);
     }
 
