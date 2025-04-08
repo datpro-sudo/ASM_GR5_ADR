@@ -108,5 +108,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             editImageView = itemView.findViewById(R.id.btnEditExpenses); // Giữ id cũ
             deleteImageView = itemView.findViewById(R.id.btnDeleteExpenses); // Giữ id cũ
         }
+
+
     }
 }

@@ -123,8 +123,17 @@ public class ProfileFragment extends Fragment {
         db.close();
 
         if (rowsUpdated > 0) {
-            Toast.makeText(getActivity(), "Profile updated successfully!", Toast.LENGTH_SHORT).show();
-            loadUserProfile(userEmail); // Reload updated profile data
+            Toast.makeText(getActivity(), "Profile updated successfully! Please log in again.", Toast.LENGTH_SHORT).show();
+            loadUserProfile(userEmail); // Reload updated profile data trước khi đăng xuất
+
+            // Xóa thông tin đăng nhập và chuyển về LoginActivity
+            SharedPreferences prefs = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+            prefs.edit().clear().apply(); // Xóa dữ liệu trong SharedPreferences
+
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            getActivity().finish(); // Đóng activity hiện tại
         } else {
             Toast.makeText(getActivity(), "Failed to update profile", Toast.LENGTH_SHORT).show();
         }

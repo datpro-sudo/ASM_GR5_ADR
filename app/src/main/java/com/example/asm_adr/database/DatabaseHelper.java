@@ -363,4 +363,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return false;
     }
+
+
+    // Trong DatabaseHelper.java
+    public List<String> getAllCategories(String userEmail) {
+        List<String> categoryList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        if (userEmail == null) {
+            db.close();
+            return categoryList;
+        }
+
+        Cursor cursor = db.rawQuery("SELECT DISTINCT " + COLUMN_CATEGORY + " FROM " + TABLE_EXPENSES + " WHERE " + COLUMN_USER_EMAIL + "=?", new String[]{userEmail});
+        if (cursor.moveToFirst()) {
+            do {
+                String category = cursor.getString(0);
+                if (category != null && !category.isEmpty()) {
+                    categoryList.add(category);
+                }
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return categoryList;
+    }
+
+    public boolean deleteExpensesByCategory(String category, String userEmail) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_EXPENSES,
+                COLUMN_CATEGORY + " = ? AND " + COLUMN_USER_EMAIL + " = ?",
+                new String[]{category, userEmail});
+        db.close();
+        return rowsDeleted > 0; // Trả về true nếu có ít nhất 1 bản ghi bị xóa
+    }
 }
